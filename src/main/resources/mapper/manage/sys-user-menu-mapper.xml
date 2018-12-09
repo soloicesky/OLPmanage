@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onlinepay.manage.dao.usermenu.ISysUserMenuDao" >
+  <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.usermenu.entity.SysUserMenu" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <id column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="MENU_ID" property="menuId" jdbcType="INTEGER" />
+    <result column="POWER_BTN" property="powerBtn" jdbcType="INTEGER" />
+    <result column="IS_DEL" property="isDel" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, MENU_ID, POWER_BTN, IS_DEL
+  </sql>
+  <select id="selectOne" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_SYS_USER_MENU
+    where USER_ID = #{userId} AND MENU_ID = #{menuId}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM T_SYS_USER_MENU
+    WHERE USER_ID = #{userId}
+  </select>
+  <insert id="insert" >
+    insert into T_SYS_USER_MENU (USER_ID, MENU_ID, POWER_BTN, IS_DEL)
+    values (#{userId}, #{menuId},0, 'T')
+  </insert>
+  <update id="update" >
+    update T_SYS_USER_MENU
+    <set >
+        IS_DEL = #{isDel,jdbcType=CHAR},
+    </set>
+    WHERE
+    USER_ID = #{userId} AND MENU_ID = #{menuId}
+  </update>
+</mapper>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onlinepay.manage.dao.user.IAdminUserDao">
+    <resultMap id="SysUserResultMap" type="com.onlinepay.manage.dao.user.entity.SysUser" >
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR" />
+        <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+        <result column="LOGIN_PWD" property="loginPwd" jdbcType="VARCHAR" />
+        <result column="ROLE_TYPE" property="roleType" jdbcType="CHAR" />
+        <result column="IS_DEL" property="isDel" jdbcType="CHAR" />
+        <result column="IS_ACTIVITY" property="isActivity" jdbcType="CHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="DATA_VERSION" property="dataVersion" jdbcType="INTEGER" />
+        <result column="ADMIN_NO" property="adminNo" jdbcType="VARCHAR" />
+        <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="SysUserColumnList" >
+        ID, NICK_NAME, LOGIN_NAME, LOGIN_PWD, ROLE_TYPE, IS_DEL, IS_ACTIVITY, CREATE_TIME,
+        DATA_VERSION,ADMIN_NO,PHONE
+    </sql>
+    <!--根据实体属性值动态添加查询条件-->
+    <sql id="SelectSysUserWhereList">
+        <if test="user.id != null" >
+            AND ID = #{user.id}
+        </if>
+        <if test="user.nickName != null" >
+            AND NICK_NAME = #{user.nickName}
+        </if>
+        <if test="user.loginName != null" >
+            AND LOGIN_NAME = #{user.loginName}
+        </if>
+        <if test="user.loginPwd != null" >
+            AND LOGIN_PWD = #{user.loginPwd}
+        </if>
+        <if test="user.roleType != null" >
+            AND ROLE_TYPE = #{user.roleType}
+        </if>
+        <if test="user.isDel != null" >
+            AND IS_DEL = #{user.isDel}
+        </if>
+        <if test="user.isActivity != null" >
+            AND IS_ACTIVITY = #{user.isActivity}
+        </if>
+        <if test="user.createTime != null" >
+            AND CREATE_TIME = #{user.createTime}
+        </if>
+        <if test="user.dataVersion != null" >
+            AND DATA_VERSION = #{user.dataVersion}
+        </if>
+        <if test="user.adminNo != null" >
+            AND ADMIN_NO = #{user.adminNo}
+        </if>
+        <if test="user.phone != null" >
+            AND PHONE = #{user.phone}
+        </if>
+
+    </sql>
+
+    <select id="selectSysUser" resultMap="SysUserResultMap">
+        SELECT
+        <include refid="SysUserColumnList"/>
+        FROM T_SYS_USER
+        WHERE 1 = 1
+        <include refid="SelectSysUserWhereList"/>
+    </select>
+
+    <select id="selectAll" resultMap="SysUserResultMap">
+        SELECT
+        <include refid="SysUserColumnList"/>
+        FROM T_SYS_USER
+        WHERE ROLE_TYPE != 0
+        <include refid="SelectSysUserWhereList"/>
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT COUNT(ID) FROM T_SYS_USER WHERE ROLE_TYPE != 0
+        <include refid="SelectSysUserWhereList"/>
+    </select>
+
+    <insert id="insertAdminUser">
+        INSERT INTO T_SYS_USER(NICK_NAME, LOGIN_NAME, LOGIN_PWD, ROLE_TYPE, IS_DEL, IS_ACTIVITY, CREATE_TIME,
+        DATA_VERSION,ADMIN_NO,PHONE)
+        VALUES (#{user.nickName},#{user.loginName},#{user.loginPwd},#{user.roleType},'T','F',#{user.createTime,jdbcType=TIMESTAMP},'0',#{user.adminNo},#{user.phone})
+    </insert>
+
+    <update id="updateAdminUser">
+        UPDATE T_SYS_USER
+        <trim prefix="set" suffixOverrides=",">
+            <if test="user.isActivity != null">
+                IS_ACTIVITY = #{user.isActivity},
+            </if>
+            <if test="user.isDel != null">
+                IS_DEL = #{user.isDel},
+            </if>
+            <if test="user.dataVersion != null">
+                DATA_VERSION = #{user.dataVersion} + 1,
+            </if>
+            <if test="user.nickName != null">
+                NICK_NAME = #{user.nickName},
+            </if>
+            <if test="user.loginName != null">
+                LOGIN_NAME = #{user.loginName},
+            </if>
+            <if test="user.phone != null">
+                PHONE = #{user.phone},
+            </if>
+            <if test="user.loginPwd != null">
+                LOGIN_PWD = #{user.loginPwd},
+            </if>
+        </trim>
+        WHERE ID = #{user.id} AND DATA_VERSION = #{user.dataVersion}
+    </update>
+    <select id="selectPageByAdminUser" resultMap="SysUserResultMap">
+        SELECT
+        <include refid="SysUserColumnList"/>
+        FROM T_SYS_USER
+        WHERE ROLE_TYPE != 0
+        <include refid="SelectSysUserWhereList"/>
+        LIMIT #{start},#{pageSize}
+    </select>
+</mapper>

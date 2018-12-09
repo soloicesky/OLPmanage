@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinepay.manage.dao.platform.IPlatformProductDao">
+  <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.platform.entity.PlatformProduct">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="platform_id" jdbcType="BIGINT" property="platformId" />
+    <result column="platform_code" jdbcType="VARCHAR" property="platformCode" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="sub_product_code" jdbcType="VARCHAR" property="subProductCode" />
+<!--     <result column="is_t0_pub_acc" jdbcType="BIT" property="isT0PubAcc" /> -->
+<!--     <result column="is_t1_pub_acc" jdbcType="BIT" property="isT1PubAcc" /> -->
+    <result column="t0_beg_time" jdbcType="VARCHAR" property="t0BegTime" />
+    <result column="t0_end_time" jdbcType="VARCHAR" property="t0EndTime" />
+    <result column="t1_beg_time" jdbcType="VARCHAR" property="t1BegTime" />
+    <result column="t1_end_time" jdbcType="VARCHAR" property="t1EndTime" />
+    <result column="max_amt" jdbcType="BIGINT" property="maxAmt" />
+    <result column="min_amt" jdbcType="BIGINT" property="minAmt" />
+<!--     <result column="t1_max_amt" jdbcType="BIGINT" property="t1MaxAmt" /> -->
+<!--     <result column="t1_min_amt" jdbcType="BIGINT" property="t1MinAmt" /> -->
+    <result column="t0_rate" jdbcType="VARCHAR" property="t0Rate" />
+    <result column="t1_rate" jdbcType="VARCHAR" property="t1Rate" />
+    <result column="fix_t0_fee" jdbcType="BIGINT" property="fixT0Fee" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+
+    <result column="name" jdbcType="VARCHAR" property="platformName" />
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    pp.id, pp.create_date, pp.update_date, pp.version, pp.platform_id, pp.platform_code, pp.product_id, pp.sub_product_code,
+    pp.t0_beg_time, pp.t0_end_time, pp.t1_beg_time, pp.t1_end_time,pp.max_amt,pp.min_amt,
+   pp.t0_rate, pp.t1_rate, pp.fix_t0_fee, pp.enabled,pp.priority,pf.name
+  </sql>
+
+  <insert id="add" parameterType="com.onlinepay.manage.dao.platform.entity.PlatformProduct">
+    insert into platform_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="platformId != null">
+        platform_id,
+      </if>
+      <if test="platformCode != null">
+        platform_code,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="subProductCode != null">
+        sub_product_code,
+      </if>
+      <if test="t0BegTime != null">
+        t0_beg_time,
+      </if>
+      <if test="t0EndTime != null">
+        t0_end_time,
+      </if>
+      <if test="t1BegTime != null">
+        t1_beg_time,
+      </if>
+      <if test="t1EndTime != null">
+        t1_end_time,
+      </if>
+      <if test="t0Rate != null">
+        t0_rate,
+      </if>
+      <if test="t1Rate != null">
+        t1_rate,
+      </if>
+      <if test="fixT0Fee != null">
+        fix_t0_fee,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="minAmt != null">
+        min_amt,
+      </if>
+      <if test="maxAmt != null">
+        max_amt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="platformId != null">
+        #{platformId,jdbcType=BIGINT},
+      </if>
+      <if test="platformCode != null">
+        #{platformCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="subProductCode != null">
+        #{subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="t0BegTime != null">
+        #{t0BegTime,jdbcType=VARCHAR},
+      </if>
+      <if test="t0EndTime != null">
+        #{t0EndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="t1BegTime != null">
+        #{t1BegTime,jdbcType=VARCHAR},
+      </if>
+      <if test="t1EndTime != null">
+        #{t1EndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="t0Rate != null">
+        #{t0Rate,jdbcType=VARCHAR},
+      </if>
+      <if test="t1Rate != null">
+        #{t1Rate,jdbcType=VARCHAR},
+      </if>
+      <if test="fixT0Fee != null">
+        #{fixT0Fee,jdbcType=BIGINT},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="minAmt != null">
+        #{minAmt,jdbcType=BIGINT},
+      </if>
+      <if test="maxAmt != null">
+        #{maxAmt,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.onlinepay.manage.dao.platform.entity.PlatformProduct">
+    update platform_product
+    <set>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="platformId != null">
+        platform_id = #{platformId,jdbcType=BIGINT},
+      </if>
+      <if test="platformCode != null">
+        platform_code = #{platformCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="subProductCode != null">
+        sub_product_code = #{subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="t0BegTime != null">
+        t0_beg_time = #{t0BegTime,jdbcType=VARCHAR},
+      </if>
+      <if test="t0EndTime != null">
+        t0_end_time = #{t0EndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="t1BegTime != null">
+        t1_beg_time = #{t1BegTime,jdbcType=VARCHAR},
+      </if>
+      <if test="t1EndTime != null">
+        t1_end_time = #{t1EndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="t0Rate != null">
+        t0_rate = #{t0Rate,jdbcType=VARCHAR},
+      </if>
+      <if test="t1Rate != null">
+        t1_rate = #{t1Rate,jdbcType=VARCHAR},
+      </if>
+      <if test="fixT0Fee != null">
+        fix_t0_fee = #{fixT0Fee,jdbcType=BIGINT},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="minAmt != null">
+        min_amt = #{minAmt,jdbcType=BIGINT},
+      </if>
+      <if test="maxAmt != null">
+        max_amt = #{maxAmt,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <sql id="BaseWhere">
+    <if test="plat.enabled != null">
+      AND pp.enabled  = #{plat.enabled}
+    </if>
+    <if test="plat.subProductCode != null">
+      AND pp.sub_product_code = #{plat.subProductCode}
+    </if>
+    <if test="plat.platformCode != null">
+      AND pp.platform_id = #{plat.platformCode}
+    </if>
+  </sql>
+  <sql id="JoinTable">
+    LEFT JOIN platform AS pf ON pf.code = pp.platform_code
+  </sql>
+  <!--分页条件查询产品-->
+  <select id="selectPageByPlatformProduct" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from platform_product AS pp
+    <include refid="JoinTable"/>
+    where 1 = 1
+    <include refid="BaseWhere" />
+    LIMIT #{start},#{pageSize}
+  </select>
+  <!--条件查询总数-->
+  <select id="selectCount" resultType="java.lang.Integer">
+    select
+    COUNT(pp.id)
+    from platform_product AS pp
+    where 1 = 1
+    <include refid="BaseWhere" />
+  </select>
+
+  <!--查询所有-->
+  <select id="selectAll" parameterType="com.onlinepay.manage.dao.product.entity.ProductRouteFix" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from platform_product AS pp
+    <include refid="JoinTable"/>
+    where 1 = 1
+    <include refid="BaseWhere"/>
+  </select>
+
+</mapper>

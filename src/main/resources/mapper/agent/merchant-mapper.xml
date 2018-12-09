@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinepay.manage.dao.merchant.IMerchantDao">
+  <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.merchant.entity.Merchant">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="channel_no" jdbcType="VARCHAR" property="channelNo" />
+    <result column="merchant_name" jdbcType="VARCHAR" property="merchantName" />
+    <result column="merchant_no" jdbcType="VARCHAR" property="merchantNo" />
+    <result column="merchant_type" jdbcType="VARCHAR" property="merchantType" />
+    <result column="account_person_id" jdbcType="VARCHAR" property="accountPersonId" />
+    <result column="account_person_phone" jdbcType="VARCHAR" property="accountPersonPhone" />
+    <result column="bank_type" jdbcType="VARCHAR" property="bankType" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+    <result column="account_no" jdbcType="VARCHAR" property="accountNo" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="bank_code" jdbcType="VARCHAR" property="bankCode" />
+    <result column="regist_date" jdbcType="TIMESTAMP" property="registDate" />
+    <result column="regist_status" jdbcType="VARCHAR" property="registStatus" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="post_id" jdbcType="VARCHAR" property="postId" />
+
+
+    <result column="name" jdbcType="VARCHAR" property="name" />
+
+
+    <result column="rate_config" jdbcType="VARCHAR" property="rateConfig" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_date, update_date, version, channel_no, merchant_name, 
+    merchant_no, merchant_type,account_person_id, account_person_phone,
+     bank_type, account_name, account_no, bank_name, bank_code, regist_date, regist_status,
+     enabled, post_id
+  </sql>
+  <sql id="BaseWhere">
+    <if test="mer.id != null">
+      AND id = #{mer.id}
+    </if>
+    <if test="mer.channelNo != null">
+      AND channel_no = #{mer.channelNo}
+    </if>
+    <if test="mer.createDate != null">
+      AND create_date &gt;= mer.createDate
+    </if>
+    <if test="mer.updateDate != null">
+      AND create_date&lt;= mer.createDate
+    </if>
+    <if test="mer.merchantName != null">
+      AND merchant_name LIKE CONCAT('%',#{mer.merchantName},'%')
+    </if>
+    <if test="mer.registStatus != null">
+      AND regist_status = #{mer.registStatus}
+    </if>
+    <if test="mer.merchantNo != null">
+      AND merchant_no = #{mer.merchantNo}
+    </if>
+  </sql>
+  <sql id="JoinTable">
+    LEFT JOIN merchant_product AS mp ON m.merchant_no = mp.merchant_no 
+    LEFT JOIN channel AS c ON m.channel_no = c.channel_no
+    
+  </sql>
+  <!--条件查询商户-->
+  <select id="selectByMerchant" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant
+    where 1 = 1
+    <include refid="BaseWhere" />
+  </select>
+  <!--分页条件查询商户-->
+  <select id="selectPageByMerchant" resultMap="BaseResultMap">
+    select m.*,c.name,mp.rate_config 
+    from 
+    (select 
+    <include refid="Base_Column_List" />
+    from merchant
+    where 1 = 1
+    <include refid="BaseWhere" />
+    order by id desc 
+    LIMIT #{start},#{pageSize})m
+            <include refid="JoinTable" />
+  </select>
+  <!--条件查询总数-->
+  <select id="selectCount" resultType="java.lang.Integer">
+    select
+    COUNT(id)
+    from merchant m
+    where 1 = 1
+    <include refid="BaseWhere" />
+  </select>
+ <update id="update">
+    UPDATE merchant
+    <set>
+      <if test="mer.enabled != null">
+      	<if test="mer.enabled">
+       		 enabled = 1,
+     	 </if>
+     	 <if test="!mer.enabled">
+       		 enabled = 0,
+     	 </if>
+      </if>
+    </set>
+    WHERE merchant_no= #{mer.merchantNo}
+  </update>
+</mapper>

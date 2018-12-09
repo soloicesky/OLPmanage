@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onlinepay.manage.dao.menu.ISysMenuDao" >
+  <resultMap id="SysMenuResultMap" type="com.onlinepay.manage.dao.menu.entity.SysMenu" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="URL" property="url" jdbcType="VARCHAR" />
+    <result column="LEVEL" property="level" jdbcType="CHAR" />
+    <result column="ICON_CLASS" property="iconClass" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
+    <result column="SORT" property="sort" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, NAME, URL, LEVEL, ICON_CLASS, PARENT_ID, SORT
+  </sql>
+  <!--根据角色类型查询需要显示的菜单-->
+  <select id="selectSysMenu" resultMap="SysMenuResultMap"  >
+    SELECT
+    sm.ID, sm.NAME, sm.URL, sm.LEVEL, sm.ICON_CLASS, sm.PARENT_ID, sm.SORT
+    FROM T_SYS_MENU AS sm
+    <if test="roleType != 0">
+     LEFT JOIN T_SYS_USER_MENU AS tsum ON tsum.MENU_ID = sm.ID
+     WHERE tsum.USER_ID = #{userId} AND tsum.IS_DEL = 'T'
+    </if>
+  </select>
+  <!--添加菜单-->
+  <insert id="insertSysMenu">
+      INSERT T_SYS_MENU(NAME, URL, LEVEL, ICON_CLASS, PARENT_ID, SORT)
+      VALUE (#{sysMenu.name},#{sysMenu.url},#{sysMenu.level},#{sysMenu.iconClass},#{sysMenu.parentId},#{sysMenu.sort})
+  </insert>
+  <!--查询菜单序列-->
+  <select id="selectNextSort" resultType="java.lang.Integer">
+    SELECT IFNULL(MAX(SORT),0) + 1 FROM T_SYS_MENU WHERE PARENT_ID = #{pId}
+  </select>
+</mapper>

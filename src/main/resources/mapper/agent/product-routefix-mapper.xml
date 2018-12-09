@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinepay.manage.dao.product.IProductRouteFixDao">
+  <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.product.entity.ProductRouteFix">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="channel_id" jdbcType="BIGINT" property="channelId" />
+    <result column="channel_no" jdbcType="VARCHAR" property="channelNo" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="sub_product_code" jdbcType="VARCHAR" property="subProductCode" />
+    <result column="platform_id" jdbcType="BIGINT" property="platformId" />
+    <result column="platform_code" jdbcType="VARCHAR" property="platformCode" />
+
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
+    <result column="platfrom_name" jdbcType="VARCHAR" property="plantfromName" />
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    crf.id, crf.create_date, crf.update_date, crf.version, crf.channel_id, crf.channel_no, crf.product_id, crf.sub_product_code,
+    crf.platform_id, crf.platform_code,prod.product_name,cha.name as channel_name,plat.name as platfrom_name
+  </sql>
+  <sql id="BaseWhere">
+    <if test="pro.id !=null">
+      AND crf.id = #{pro.id}
+    </if>
+    <if test="pro.channelNo !=null">
+      AND crf.channel_no = #{pro.channelNo}
+    </if>
+    <if test="pro.channelName !=null">
+      AND cha.name = #{pro.channelName}
+    </if>
+    <if test="pro.platformCode !=null">
+      AND crf.platform_code = #{pro.platformCode}
+    </if>
+    <if test="pro.subProductCode !=null">
+      AND crf.sub_product_code = #{pro.subProductCode}
+    </if>
+  </sql>
+
+  <sql id="JoinTable">
+    LEFT JOIN product as prod ON prod.sub_product_code = crf.sub_product_code
+    LEFT JOIN platform as plat ON plat.code = crf.platform_code
+    LEFT JOIN channel as cha ON cha.channel_no = crf.channel_no
+  </sql>
+  <!--查询所有-->
+  <select id="selectAll" parameterType="com.onlinepay.manage.dao.product.entity.ProductRouteFix" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from channel_route_fix AS crf
+    <include refid="JoinTable"/>
+    where 1 = 1
+    <include refid="BaseWhere"/>
+  </select>
+
+  <!--添加-->
+  <insert id="add" parameterType="com.onlinepay.manage.dao.product.entity.ProductRouteFix">
+    insert into channel_route_fix
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pro.id != null">
+        id,
+      </if>
+      <if test="pro.createDate != null">
+        create_date,
+      </if>
+      <if test="pro.updateDate != null">
+        update_date,
+      </if>
+      <if test="pro.version != null">
+        version,
+      </if>
+      <if test="pro.channelId != null">
+        channel_id,
+      </if>
+      <if test="pro.channelNo != null">
+        channel_no,
+      </if>
+      <if test="pro.productId != null">
+        product_id,
+      </if>
+      <if test="pro.subProductCode != null">
+        sub_product_code,
+      </if>
+      <if test="pro.platformId != null">
+        platform_id,
+      </if>
+      <if test="pro.platformCode != null">
+        platform_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pro.id != null">
+        #{pro.id,jdbcType=BIGINT},
+      </if>
+      <if test="pro.createDate != null">
+        #{pro.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro.updateDate != null">
+        #{pro.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro.version != null">
+        #{pro.version,jdbcType=BIGINT},
+      </if>
+      <if test="pro.channelId != null">
+        #{pro.channelId,jdbcType=BIGINT},
+      </if>
+      <if test="pro.channelNo != null">
+        #{pro.channelNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.productId != null">
+        #{pro.productId,jdbcType=BIGINT},
+      </if>
+      <if test="pro.subProductCode != null">
+        #{pro.subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.platformId != null">
+        #{pro.platformId,jdbcType=BIGINT},
+      </if>
+      <if test="pro.platformCode != null">
+        #{pro.platformCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <!--修改-->
+  <update id="update" parameterType="com.onlinepay.manage.dao.product.entity.ProductRouteFix">
+    update channel_route_fix
+    <set>
+      <if test="pro.createDate != null">
+        create_date = #{pro.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro.updateDate != null">
+        update_date = #{pro.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro.version != null">
+        version = #{pro.version,jdbcType=BIGINT},
+      </if>
+      <if test="pro.channelId != null">
+        channel_id = #{pro.channelId,jdbcType=BIGINT},
+      </if>
+      <if test="pro.channelNo != null">
+        channel_no = #{pro.channelNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.productId != null">
+        product_id = #{pro.productId,jdbcType=BIGINT},
+      </if>
+      <if test="pro.subProductCode != null">
+        sub_product_code = #{pro.subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.platformId != null">
+        platform_id = #{pro.platformId,jdbcType=BIGINT},
+      </if>
+      <if test="pro.platformCode != null">
+        platform_code = #{pro.platformCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{pro.id,jdbcType=BIGINT}
+  </update>
+
+
+  <!--分页条件查询产品-->
+  <select id="selectPageByProductRouteFix" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from channel_route_fix AS crf
+    <include refid="JoinTable"/>
+    where 1 = 1
+    <include refid="BaseWhere" />
+    LIMIT #{start},#{pageSize}
+  </select>
+  <!--条件查询总数-->
+  <select id="selectCount" resultType="java.lang.Integer">
+    select
+    COUNT(crf.id)
+    from channel_route_fix AS crf
+    <include refid="JoinTable"/>
+    where 1 = 1
+    <include refid="BaseWhere" />
+  </select>
+</mapper>

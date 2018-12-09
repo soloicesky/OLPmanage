@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinepay.manage.dao.payment.IWxOrAliDao">
+  <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.payment.entity.QrTradeOrder">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="platform_code" jdbcType="VARCHAR" property="platformCode" />
+    <result column="platform_order_no" jdbcType="VARCHAR" property="platformOrderNo" />
+    <result column="channel_no" jdbcType="VARCHAR" property="channelNo" />
+    <result column="merchant_no" jdbcType="VARCHAR" property="merchantNo" />
+    <result column="amount" jdbcType="BIGINT" property="amount" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="apply_order_no" jdbcType="VARCHAR" property="applyOrderNo" />
+    <result column="trade_type" jdbcType="VARCHAR" property="tradeType" />
+    <result column="goodsname" jdbcType="VARCHAR" property="goodsname" />
+    <result column="goodsdetail" jdbcType="VARCHAR" property="goodsdetail" />
+    <result column="settle_type" jdbcType="VARCHAR" property="settleType" />
+    <result column="code_url" jdbcType="VARCHAR" property="codeUrl" />
+    <result column="trade_status" jdbcType="VARCHAR" property="tradeStatus" />
+    <result column="settle_status" jdbcType="VARCHAR" property="settleStatus" />
+    <result column="order_ip" jdbcType="VARCHAR" property="orderIp" />
+    <result column="trade_date" jdbcType="TIMESTAMP" property="tradeDate" />
+    <result column="platform_trade_date" jdbcType="TIMESTAMP" property="platformTradeDate" />
+    <result column="notice_date" jdbcType="TIMESTAMP" property="noticeDate" />
+    <result column="notice_status" jdbcType="VARCHAR" property="noticeStatus" />
+    <result column="platform_merchant_no" jdbcType="VARCHAR" property="platformMerchantNo" />
+    <result column="merchant_fee" jdbcType="BIGINT" property="merchantFee" />
+    <result column="channel_fee" jdbcType="BIGINT" property="channelFee" />
+    <result column="platform_fee" jdbcType="BIGINT" property="platformFee" />
+    <result column="fix_fee" jdbcType="BIGINT" property="fixFee" />
+
+    <result column="name" jdbcType="VARCHAR" property="channelName" />
+    <result column="merchant_name" jdbcType="VARCHAR" property="merchantName" />
+
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    qtr.id, qtr.create_date, qtr.update_date, qtr.version, qtr.platform_code, qtr.platform_order_no, qtr.channel_no,
+    qtr.merchant_no, qtr.amount, qtr.order_no, qtr.apply_order_no, qtr.trade_type, qtr.goodsname, qtr.goodsdetail,
+    qtr.settle_type, qtr.code_url, qtr.trade_status, qtr.settle_status, qtr.order_ip, qtr.trade_date, qtr.platform_trade_date,
+    qtr.notice_date, qtr.notice_status, qtr.platform_merchant_no, qtr.merchant_fee, qtr.channel_fee, qtr.platform_fee,
+    qtr.fix_fee,cha.name,mer.merchant_name
+  </sql>
+  <sql id="PageBaseWhere">
+    <if test="qo.id != null">
+      AND qtr.id = #{qo.id}
+    </if>
+    <if test="qo.channelNo != null">
+      AND qtr.channel_no = #{qo.channelNo}
+    </if>
+    <if test="qo.merchantNo != null">
+      AND qtr.merchant_no = #{qo.merchantNo}
+    </if>
+    <if test="qo.tradeType != null">
+      AND qtr.trade_type = #{qo.tradeType}
+    </if>
+    <if test="qo.orderNo != null">
+      AND qtr.order_no = #{qo.orderNo}
+    </if>
+    <if test="qo.applyOrderNo != null">
+      AND qtr.apply_order_no = #{qo.applyOrderNo}
+    </if>
+    <if test="qo.createDate != null">
+      AND TIMESTAMPDIFF(DAY,#{qo.createDate},DATE_FORMAT(qtr.create_date,'%Y-%m-%d')) &gt;= 0
+    </if>
+    <if test="qo.updateDate != null">
+      AND TIMESTAMPDIFF(DAY,#{qo.updateDate},DATE_FORMAT(qtr.create_date,'%Y-%m-%d')) &lt;= 0
+    </if>
+    <if test="qo.tradeStatus != null">
+      AND qtr.trade_status = #{qo.tradeStatus}
+    </if>
+
+    <if test="qo.channelName != null">
+      AND cha.name = #{qo.channelName}
+    </if>
+    <if test="qo.merchantName != null">
+      AND mer.merchant_name = #{qo.merchantName}
+    </if>
+  </sql>
+  <sql id="LeftJoinSql">
+    LEFT JOIN channel AS cha ON qtr.channel_no = cha.channel_no
+    LEFT JOIN merchant AS mer ON qtr.merchant_no = mer.merchant_no
+  </sql>
+  <!--根据查询条件查询所有-->
+  <select id="selectAllByEntity" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qr_trade_order AS qtr
+    <include refid="LeftJoinSql"/>
+    where 1 = 1
+    <include refid="PageBaseWhere" />
+  </select>
+  <!--分页查询-->
+  <select id="selectAllByPageEntity" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qr_trade_order AS qtr
+    <include refid="LeftJoinSql"/>
+    where 1 = 1
+    <include refid="PageBaseWhere" />
+    ORDER BY qtr.create_date DESC
+    LIMIT #{start},#{pageSize}
+  </select>
+  <!--根据订单类型分组查询统计-->
+  <select id="selectGroupBy" resultType="java.util.Map">
+    select qtr.trade_type,qtr.trade_status,count(qtr.id) as clocount,sum(qtr.amount) as closum from qr_trade_order as qtr
+    <include refid="LeftJoinSql"/>
+    where 1 = 1
+    <include refid="PageBaseWhere" />
+    GROUP BY trade_type,trade_status
+  </select>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(qtr.id)
+    FROM qr_trade_order AS qtr
+    <include refid="LeftJoinSql"/>
+    WHERE 1=1
+    <include refid="PageBaseWhere" />
+  </select>
+
+
+
+</mapper>

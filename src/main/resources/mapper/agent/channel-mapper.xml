@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinepay.manage.dao.channel.IChannelDao">
+  <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.channel.entity.Channel">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="channel_no" jdbcType="VARCHAR" property="channelNo" />
+    <result column="public_key" jdbcType="VARCHAR" property="secretKey" />
+    <result column="access_key" jdbcType="VARCHAR" property="accessKey" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="config" jdbcType="VARCHAR" property="config" />
+    <result column="settle_carno" jdbcType="VARCHAR" property="settleCarno" />
+    <result column="settle_name" jdbcType="VARCHAR" property="settleName" />
+    <result column="settle_bank" jdbcType="VARCHAR" property="settleBank" />
+    <result column="bank_no" jdbcType="VARCHAR" property="bankNo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_date, update_date, version, name, channel_no, public_key, access_key, 
+    description, enabled, config, settle_carno, settle_name, settle_bank, bank_no
+  </sql>
+  <sql id="BaseWhere">
+    <if test="cha.id != null">
+      AND id = #{cha.id}
+    </if>
+    <if test="cha.channelNo != null">
+      AND channel_no = #{cha.channelNo}
+    </if>
+    <if test="cha.createDate != null">
+      AND timestampdiff(day,#{cha.createDate},date_format(create_date,'%Y-%m-%d')) &gt;= 0
+    </if>
+    <if test="cha.updateDate != null">
+      AND timestampdiff(day,#{cha.updateDate},DATE_FORMAT(create_date,'%Y-%m-%d')) &lt;= 0
+    </if>
+    <if test="cha.name != null">
+      AND name LIKE CONCAT('%',#{cha.name},'%')
+    </if>
+  </sql>
+  <!--根据渠道类查询渠道信息-->
+  <select id="selectByChannel" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from channel
+    where 1 = 1
+    <include refid="BaseWhere"/>
+  </select>
+
+  <!--根据渠道类查询渠道信息-->
+  <select id="selectPageByChannel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from channel
+    where 1 = 1
+    <include refid="BaseWhere"/>
+    LIMIT #{start},#{pageSize}
+  </select>
+
+  <select id="selectCount" resultType="java.lang.Integer">
+    select
+    COUNT(id)
+    from channel
+    where 1 = 1
+    <include refid="BaseWhere" />
+  </select>
+
+  <update id="update">
+    UPDATE channel
+    <set>
+      <if test="cha.enabled != null">
+        enabled = #{cha.enabled},
+      </if>
+      <if test="cha.enabled != null">
+        version = #{cha.version} + 1,
+      </if>
+      <if test="cha.settleCarno != null">
+        settle_carno = #{cha.settleCarno},
+      </if>
+      <if test="cha.settleName != null">
+        settle_name = #{cha.settleName},
+      </if>
+      <if test="cha.settleBank != null">
+        settle_bank = #{cha.settleBank},
+      </if>
+      <if test="cha.bankNo != null">
+        bank_no = #{cha.bankNo},
+      </if>
+      <if test="cha.description != null">
+        description = #{cha.description},
+      </if>
+      <if test="cha.config != null">
+        config = #{cha.config}
+      </if>
+    </set>
+    WHERE id = #{cha.id}
+  </update>
+
+  <select id="selectMaxChannelNo" resultType="java.lang.String">
+    SELECT MAX(channel_no)+1 FROM channel
+  </select>
+
+  <insert id="add">
+    INSERT INTO channel(
+      create_date,update_date,version,name,channel_no,public_key,access_key,description,enabled,config,settle_carno,settle_name,settle_bank,bank_no
+    ) VALUES (
+      #{cha.createDate},#{cha.updateDate},#{cha.version},#{cha.name},
+      #{cha.channelNo},#{cha.secretKey},#{cha.accessKey},#{cha.description},#{cha.enabled},#{cha.config},#{cha.settleCarno},#{cha.settleName},#{cha.settleBank},#{cha.bankNo}
+    )
+  </insert>
+
+</mapper>

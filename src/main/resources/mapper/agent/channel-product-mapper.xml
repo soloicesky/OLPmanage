@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinepay.manage.dao.channel.IChannelProductDao">
+  <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.channel.entity.ChannelProduct">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="channel_id" jdbcType="BIGINT" property="channelId" />
+    <result column="channel_no" jdbcType="VARCHAR" property="channelNo" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="sub_product_code" jdbcType="VARCHAR" property="subProductCode" />
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="t0_rate" jdbcType="VARCHAR" property="t0Rate" />
+    <result column="t1_rate" jdbcType="VARCHAR" property="t1Rate" />
+    <result column="fix_t0_fee" jdbcType="BIGINT" property="fixT0Fee" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+<!--      <result column="debit_fee" jdbcType="VARCHAR" property="debitFee" /> -->
+<!--     <result column="max_fee" jdbcType="VARCHAR" property="maxFee" /> -->
+<!--     <result column="t0_min" jdbcType="VARCHAR" property="ToMin" /> -->
+<!--     <result column="credit_fee" jdbcType="VARCHAR" property="creditFee" /> -->
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_date, update_date, version, channel_id, channel_no, product_id, sub_product_code, 
+    product_code, t0_rate, t1_rate, fix_t0_fee, description 
+  </sql>
+
+  <sql id="BaseWhere">
+    <if test="channelNo != null">
+      AND channel_no = #{channelNo}
+    </if>
+  </sql>
+  <!--查询所有-->
+  <select id="selectAll" parameterType="com.onlinepay.manage.dao.channel.entity.ChannelProduct" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from channel_product
+    where 1 = 1
+    <include refid="BaseWhere" />
+  </select>
+  <!--添加-->
+  <insert id="add" parameterType="com.onlinepay.manage.dao.channel.entity.ChannelProduct">
+    insert into channel_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="channelId != null">
+        channel_id,
+      </if>
+      <if test="channelNo != null">
+        channel_no,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="subProductCode != null">
+        sub_product_code,
+      </if>
+      <if test="productCode != null">
+        product_code,
+      </if>
+      <if test="t0Rate != null">
+        t0_rate,
+      </if>
+      <if test="t1Rate != null">
+        t1_rate,
+      </if>
+      <if test="fixT0Fee != null">
+        fix_t0_fee,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="channelId != null">
+        #{channelId,jdbcType=BIGINT},
+      </if>
+      <if test="channelNo != null">
+        #{channelNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="subProductCode != null">
+        #{subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="t0Rate != null">
+        #{t0Rate,jdbcType=VARCHAR},
+      </if>
+      <if test="t1Rate != null">
+        #{t1Rate,jdbcType=VARCHAR},
+      </if>
+      <if test="fixT0Fee != null">
+        #{fixT0Fee,jdbcType=BIGINT},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    ON DUPLICATE KEY
+    UPDATE
+    <trim suffixOverrides=",">
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="t0Rate != null">
+        t0_rate = #{t0Rate,jdbcType=VARCHAR},
+      </if>
+      <if test="t1Rate != null">
+        t1_rate = #{t1Rate,jdbcType=VARCHAR},
+      </if>
+      <if test="fixT0Fee != null">
+        fix_t0_fee = #{fixT0Fee,jdbcType=BIGINT},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <!--修改-->
+  <update id="update" parameterType="com.onlinepay.manage.dao.channel.entity.ChannelProduct">
+    update channel_product
+    <set>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="channelId != null">
+        channel_id = #{channelId,jdbcType=BIGINT},
+      </if>
+      <if test="channelNo != null">
+        channel_no = #{channelNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="subProductCode != null">
+        sub_product_code = #{subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="t0Rate != null">
+        t0_rate = #{t0Rate,jdbcType=VARCHAR},
+      </if>
+      <if test="t1Rate != null">
+        t1_rate = #{t1Rate,jdbcType=VARCHAR},
+      </if>
+      <if test="fixT0Fee != null">
+        fix_t0_fee = #{fixT0Fee,jdbcType=BIGINT},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where channel_no = #{channelNo,jdbcType=BIGINT}
+  </update>
+<!--查询所有-->
+  <select id="selectChannelProduct"  parameterType="com.onlinepay.manage.dao.channel.entity.ChannelProduct" resultMap="BaseResultMap">
+    select v1.product_name as productName,v2.product_id,v2.product_code,v2.channel_id,v2.channel_no,
+    v2.create_date,v2.fix_t0_fee,v2.t0_rate,v2.t1_rate,v2.sub_product_code,v2.channel_id 
+    from product v1,channel_product v2 where v1.id=v2.product_id and 
+    v1.product_code=v2.product_code <include refid="BaseWhere" /> 
+    </select>
+
+</mapper>

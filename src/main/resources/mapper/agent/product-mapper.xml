@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinepay.manage.dao.product.IProductDao">
+  <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.product.entity.Product">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="sub_product_code" jdbcType="VARCHAR" property="subProductCode" />
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_date, update_date, version, product_name, sub_product_code, product_code, 
+    description
+  </sql>
+
+  <sql id="BaseWhere">
+    <if test="pro.productName != null">
+      AND product_name LIKE CONCAT('%',#{pro.productName},'%')
+    </if>
+    <if test="pro.createDate != null">
+      AND TIMESTAMPDIFF(DAY,#{pro.createDate},DATE_FORMAT(create_date,'%Y-%m-%d')) &gt;= 0
+    </if>
+    <if test="pro.updateDate != null">
+      AND TIMESTAMPDIFF(DAY,#{pro.updateDate},DATE_FORMAT(create_date,'%Y-%m-%d')) &lt;= 0
+    </if>
+  </sql>
+
+  <insert id="addProduct" >
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pro.id != null">
+        id,
+      </if>
+      <if test="pro.createDate != null">
+        create_date,
+      </if>
+      <if test="pro.updateDate != null">
+        update_date,
+      </if>
+      <if test="pro.version != null">
+        version,
+      </if>
+      <if test="pro.productName != null">
+        product_name,
+      </if>
+      <if test="pro.subProductCode != null">
+        sub_product_code,
+      </if>
+      <if test="pro.productCode != null">
+        product_code,
+      </if>
+      <if test="pro.description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pro.id != null">
+        #{pro.id,jdbcType=BIGINT},
+      </if>
+      <if test="pro.createDate != null">
+        #{pro.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro.updateDate != null">
+        #{pro.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro.version != null">
+        #{pro.version,jdbcType=BIGINT},
+      </if>
+      <if test="pro.productName != null">
+        #{pro.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.subProductCode != null">
+        #{pro.subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.productCode != null">
+        #{pro.productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.description != null">
+        #{pro.description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateProduct" >
+    update product
+    <set>
+      <if test="pro.createDate != null">
+        create_date = #{pro.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro.updateDate != null">
+        update_date = #{pro.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro.version != null">
+        version = #{pro.version,jdbcType=BIGINT},
+      </if>
+      <if test="pro.productName != null">
+        product_name = #{pro.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.subProductCode != null">
+        sub_product_code = #{pro.subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.productCode != null">
+        product_code = #{pro.productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pro.description != null">
+        description = #{pro.description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{pro.id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM product
+    WHERE 1 = 1
+    <include refid="BaseWhere" />
+  </select>
+
+  <!--分页条件查询产品-->
+  <select id="selectPageByProduct" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product
+    where 1 = 1
+    <include refid="BaseWhere" />
+    LIMIT #{start},#{pageSize}
+  </select>
+  <!--条件查询总数-->
+  <select id="selectCount" resultType="java.lang.Integer">
+    select
+    COUNT(id)
+    from product
+    where 1 = 1
+    <include refid="BaseWhere" />
+  </select>
+ 
+  
+</mapper>

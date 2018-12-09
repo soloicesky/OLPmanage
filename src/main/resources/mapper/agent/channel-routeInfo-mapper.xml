@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlinepay.manage.dao.channel.IChannelRouteInfoDao">
+  <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.channel.entity.ChannelRouteInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="channel_id" jdbcType="BIGINT" property="channelId" />
+    <result column="channel_no" jdbcType="VARCHAR" property="channelNo" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="sub_product_code" jdbcType="VARCHAR" property="subProductCode" />
+    <result column="is_fix" jdbcType="BIT" property="isFix" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_date, update_date, version, channel_id, channel_no, product_id, sub_product_code, 
+    is_fix
+  </sql>
+  <sql id="BaseWhere">
+    <if test="id != null">
+      AND id = #{id},
+    </if>
+    <if test="channelId != null">
+      AND channel_id = #{channelId},
+    </if>
+    <if test="channelNo != null">
+      AND channel_no = #{channelNo},
+    </if>
+    <if test="productId != null">
+      AND product_id = #{productId},
+    </if>
+    <if test="subProductCode != null">
+      AND sub_product_code = #{subProductCode},
+    </if>
+    <if test="isFix != null">
+      AND is_fix = #{isFix},
+    </if>
+  </sql>
+  <!--查询所有-->
+  <select id="selectAll" parameterType="com.onlinepay.manage.dao.channel.entity.ChannelRouteInfo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from channel_route_info
+    where 1 = 1
+    <include refid="BaseWhere"/>
+  </select>
+  <select id="selectOne" parameterType="com.onlinepay.manage.dao.channel.entity.ChannelRouteInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from channel_route_info
+    where 1 = 1
+    <include refid="BaseWhere"/>
+  </select>
+  <!--添加-->
+  <insert id="add" parameterType="com.onlinepay.manage.dao.channel.entity.ChannelRouteInfo">
+    insert into channel_route_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="channelId != null">
+        channel_id,
+      </if>
+      <if test="channelNo != null">
+        channel_no,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="subProductCode != null">
+        sub_product_code,
+      </if>
+      <if test="isFix != null">
+        is_fix,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="channelId != null">
+        #{channelId,jdbcType=BIGINT},
+      </if>
+      <if test="channelNo != null">
+        #{channelNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="subProductCode != null">
+        #{subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isFix != null">
+        #{isFix,jdbcType=BIT},
+      </if>
+    </trim>
+    ON DUPLICATE KEY UPDATE
+    <trim suffixOverrides=",">
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <!--修改-->
+  <update id="update" parameterType="com.onlinepay.manage.dao.channel.entity.ChannelRouteInfo">
+    update channel_route_info
+    <set>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="channelId != null">
+        channel_id = #{channelId,jdbcType=BIGINT},
+      </if>
+      <if test="channelNo != null">
+        channel_no = #{channelNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="subProductCode != null">
+        sub_product_code = #{subProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isFix != null">
+        is_fix = #{isFix,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>
