@@ -12,7 +12,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <jsp:include page="../core/_header.jsp"/>
     <link rel="stylesheet" href="${basePath}/plugin/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
-    <title>添加管理员</title>
+    <title>编辑明细</title>
 </head>
 <body>
 <article class="page-container">
@@ -31,20 +31,6 @@
                 <input type="text" class="input-text" value="${IdUser.nickName}" id="nickName" name="nickName">
             </div>
         </div>
-        <c:if test="${isOrgan}">
-            <div class="row cl">
-                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>机构号：</label>
-                <div class="formControls col-xs-8 col-sm-9">
-                    <input type="text" class="input-text"  id="office_id" name="office_id">
-                </div>
-            </div>
-            <div class="row cl">
-                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注：</label>
-                <div class="formControls col-xs-8 col-sm-9">
-                    <input type="text" class="input-text"  id="remarks" name="remarks">
-                </div>
-            </div>
-        </c:if>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱(登录账号)：</label>
             <div class="formControls col-xs-8 col-sm-9">

@@ -54,6 +54,9 @@ public class AdminUser {
     private String phone;
     private Integer dataVersion;
 
+    private Integer office_id;
+    private String remarks;
+
     public Integer getDataVersion() {
         return dataVersion;
     }
@@ -156,5 +159,21 @@ public class AdminUser {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getOffice_id() {
+        return office_id;
+    }
+
+    public void setOffice_id(Integer office_id) {
+        this.office_id = office_id;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }

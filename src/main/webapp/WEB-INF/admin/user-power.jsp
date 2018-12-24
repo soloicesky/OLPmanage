@@ -18,7 +18,16 @@
 <article class="page-container">
     <form class="form form-horizontal" id="form-admin-power">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>管理员名称：</label>
+            <label class="form-label col-xs-4 col-sm-3">
+                <span class="c-red">*</span>
+                <c:choose>
+                    <c:when test="${isOrgan}">
+                        机构商户名称：
+                        <input type="hidden" value="7" name="roleType" />
+                    </c:when>
+                    <c:otherwise>管理员名称：</c:otherwise>
+                </c:choose>
+            </label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="${IdUser.nickName}" readonly id="nickName">
             </div>
