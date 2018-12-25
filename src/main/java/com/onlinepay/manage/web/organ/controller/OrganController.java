@@ -2,7 +2,7 @@ package com.onlinepay.manage.web.organ.controller;
 
 import com.onlinepay.manage.common.log.BaseLog;
 import com.onlinepay.manage.common.page.JqueryPageInfo;
-import com.onlinepay.manage.dao.organ.entity.Organ;
+import com.onlinepay.manage.dao.organ.entity.OrganAccount;
 import com.onlinepay.manage.service.IOrganService;
 import com.onlinepay.manage.service.entity.AdminUser;
 import com.onlinepay.manage.web.system.enums.LoginEnums;
@@ -65,19 +65,20 @@ public class OrganController extends BaseLog<OrganController> {
      */
     @RequestMapping("listBalanceData")
     @ResponseBody
-    public JqueryPageInfo<Organ> listBalanceData(JqueryPageInfo<Organ> pageInfo, HttpSession session){
+    public JqueryPageInfo<OrganAccount> listBalanceData(JqueryPageInfo<OrganAccount> pageInfo, HttpSession session){
 
         // 当前用户
         AdminUser user = (AdminUser)session.getAttribute(LoginEnums.LOGIN_KEY.getKey());
         if(null != user) {
-            Organ organ = new Organ();
-            organ.setDel_flag(0);
-            if("0".equals(user.getRoleType()))
-                organ.setLogin_id(0);
-            else
-                organ.setLogin_id(user.getId());
+            OrganAccount organAccount = new OrganAccount();
+            organAccount.setDel_flag(0);
 
-            JqueryPageInfo<Organ> jqueryPageInfo = organService.selectPage(pageInfo, organ);
+            if("0".equals(user.getRoleType()))
+                organAccount.setUpdate_by(0);
+            else
+                organAccount.setUpdate_by(user.getId());
+
+            JqueryPageInfo<OrganAccount> jqueryPageInfo = organService.selectAccountPage(pageInfo, organAccount);
             return jqueryPageInfo;
         } else {
             pageInfo.setData(new ArrayList<>());

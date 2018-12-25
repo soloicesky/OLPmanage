@@ -1,10 +1,9 @@
 package com.onlinepay.manage.dao.organ.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 机构商户
+ * 机构
  */
 public class Organ {
 
@@ -12,35 +11,14 @@ public class Organ {
      * id
      */
     private Integer id;
+    /**
+     * 登陆账号
+     */
     private Integer login_id;
     /**
-     * 机构号
+     * 机构名称
      */
-    private Integer office_id;
-    /**
-     * 账户余额
-     */
-    private BigDecimal total_amount;
-    /**
-     * 可用余额
-     */
-    private BigDecimal use_amount;
-    /**
-     * 可提现余额
-     */
-    private BigDecimal draw_amount;
-    /**
-     * 冻结金额
-     */
-    private BigDecimal freeze_amount;
-    /**
-     * 状态 0:正常 1:停用 2:冻结
-     */
-    private Integer status;
-    /**
-     * 创建者
-     */
-    private Integer create_by;
+    private String name;
     /**
      * 创建时间
      */
@@ -50,17 +28,33 @@ public class Organ {
      */
     private Date update_date;
     /**
-     * 更新者
+     * 机构号
      */
-    private Integer update_by;
+    private String organ_no;
     /**
-     * 备注
+     * 公钥
      */
-    private String remarks;
+    private String public_key;
     /**
-     * 删除标记（0：正常；1：删除）
+     * 身份标识key
      */
-    private Integer del_flag;
+    private String access_key;
+    /**
+     * 结算卡号
+     */
+    private String settle_carno;
+    /**
+     * 结算人
+     */
+    private String settle_name;
+    /**
+     * 结算银行
+     */
+    private String settle_bank;
+    /**
+     * 开户行号
+     */
+    private String bank_no;
 
     public Integer getId() {
         return id;
@@ -70,60 +64,20 @@ public class Organ {
         this.id = id;
     }
 
-    public Integer getOffice_id() {
-        return office_id;
+    public Integer getLogin_id() {
+        return login_id;
     }
 
-    public void setOffice_id(Integer office_id) {
-        this.office_id = office_id;
+    public void setLogin_id(Integer login_id) {
+        this.login_id = login_id;
     }
 
-    public BigDecimal getTotal_amount() {
-        return total_amount;
+    public String getName() {
+        return name;
     }
 
-    public void setTotal_amount(BigDecimal total_amount) {
-        this.total_amount = total_amount;
-    }
-
-    public BigDecimal getUse_amount() {
-        return use_amount;
-    }
-
-    public void setUse_amount(BigDecimal use_amount) {
-        this.use_amount = use_amount;
-    }
-
-    public BigDecimal getDraw_amount() {
-        return draw_amount;
-    }
-
-    public void setDraw_amount(BigDecimal draw_amount) {
-        this.draw_amount = draw_amount;
-    }
-
-    public BigDecimal getFreeze_amount() {
-        return freeze_amount;
-    }
-
-    public void setFreeze_amount(BigDecimal freeze_amount) {
-        this.freeze_amount = freeze_amount;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getCreate_by() {
-        return create_by;
-    }
-
-    public void setCreate_by(Integer create_by) {
-        this.create_by = create_by;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getCreate_date() {
@@ -142,35 +96,59 @@ public class Organ {
         this.update_date = update_date;
     }
 
-    public Integer getUpdate_by() {
-        return update_by;
+    public String getOrgan_no() {
+        return organ_no;
     }
 
-    public void setUpdate_by(Integer update_by) {
-        this.update_by = update_by;
+    public void setOrgan_no(String organ_no) {
+        this.organ_no = organ_no;
     }
 
-    public String getRemarks() {
-        return remarks;
+    public String getPublic_key() {
+        return public_key;
     }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
+    public void setPublic_key(String public_key) {
+        this.public_key = public_key;
     }
 
-    public Integer getDel_flag() {
-        return del_flag;
+    public String getAccess_key() {
+        return access_key;
     }
 
-    public void setDel_flag(Integer del_flag) {
-        this.del_flag = del_flag;
+    public void setAccess_key(String access_key) {
+        this.access_key = access_key;
     }
 
-    public Integer getLogin_id() {
-        return login_id;
+    public String getSettle_carno() {
+        return settle_carno;
     }
 
-    public void setLogin_id(Integer login_id) {
-        this.login_id = login_id;
+    public void setSettle_carno(String settle_carno) {
+        this.settle_carno = settle_carno;
+    }
+
+    public String getSettle_name() {
+        return settle_name;
+    }
+
+    public void setSettle_name(String settle_name) {
+        this.settle_name = settle_name;
+    }
+
+    public String getSettle_bank() {
+        return settle_bank;
+    }
+
+    public void setSettle_bank(String settle_bank) {
+        this.settle_bank = settle_bank;
+    }
+
+    public String getBank_no() {
+        return bank_no;
+    }
+
+    public void setBank_no(String bank_no) {
+        this.bank_no = bank_no;
     }
 }

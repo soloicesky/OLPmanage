@@ -32,7 +32,7 @@
     <table class="table table-border table-bordered table-bg">
         <thead>
         <tr class="text-c">
-            <th>机构账户id</th>
+            <th>所属机构</th>
             <th>账户余额</th>
             <th>可用余额</th>
             <th>提现余额</th>
@@ -40,7 +40,6 @@
             <th>状态</th>
             <th>更新时间</th>
             <th>备注</th>
-            <th>是否已启用</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -54,8 +53,8 @@
 <script type="text/javascript" src="${basePath}/plugin/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="${basePath}/plugin/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="${basePath}/plugin/laypage/1.2/laypage.js"></script>
-<script type="text/javascript">
 
+<script type="text/javascript">
 
     Date.prototype.Format = function (fmt) {
         var o = {
@@ -81,11 +80,11 @@
         "serverSide": true,
         "bLengthChange": false,
         "columns": [
-            {"data":"office_id"},
-            {"data":"total_amount"},
-            {"data":"use_amount"},
-            {"data":"draw_amount"},
-            {"data":"freeze_amount"},
+            {"data":"organ_id"},
+            {"data":"totalAmount"},
+            {"data":"useAmount"},
+            {"data":"drawAmount"},
+            {"data":"freezeAmount"},
             {"data":"status"},
             {"data":"update_date"},
             {"data":"remarks"},
@@ -95,145 +94,44 @@
             $(row).children('td').attr('style', 'text-align:center;')
         },
         "ajax": {
-            "url": "${basePath}/organ/listBalanceData",
+            "url": "${basePath}/organAccount/listBalanceData",
             "type": "POST",
             "data": function (d) {
                 // d.beginTime = $("input[id='datemin']").val();
                 // d.endTime = $("input[id='datemax']").val();
-                // d.office_id = $("input[name='nickName']").val();
+                // d.organ_id = $("input[name='nickName']").val();
             },
             "dataSrc": function (data) {
                 var dataArr = data.data;
                 var html = $("#doMore").html();
                 for (var i = 0; i < dataArr.length; i++) {
                     var itemHtml = html;
+
+                    //'状态 0:正常 1:停用 2:冻结',
+                    if(dataArr[i].status === 2)
+                        dataArr[i].status = '<span class="label label-default radius">已冻结</span>';
+                    else if(dataArr[i].status === 1)
+                        dataArr[i].status = '<span class="label label-default radius">已停用</span>';
+                    else if(dataArr[i].status === 0)
+                        dataArr[i].status = '<span class="label label-success radius">正常</span>';
+
                     dataArr[i]['doMore']= itemHtml;
 
-                    var dateVal = new Date(dataArr[i].createTime);
-                    dataArr[i].createTime = dateVal.Format("yyyy-MM-dd HH:mm:ss");
-                    dataArr[i].nickName = "<a href='javascript:void(0);' onclick='showDetail(\"" + dataArr[i].id +  "\")' >" + dataArr[i].nickName + "</a>";
+                    var dateVal = new Date(dataArr[i].update_date);
+                    dataArr[i].update_date = dateVal.Format("yyyy-MM-dd HH:mm:ss");
+                    // dataArr[i].nickName = "<a href='javascript:void(0);' onclick='showDetail(\"" + dataArr[i].id +  "\")' >" + dataArr[i].nickName + "</a>";
                 }
                 return dataArr;
             }
         }
     });
 </script>
-    <script type="text/html" id="doMore">
-        <c:if test="${curUser.roleType eq '0'}">
-            <a style="text-decoration:none" onClick="{Fun}(this,'{ID}')" data-vsersion="{dataVersion}" href="javascript:;" title="{Title}"></a>
-            <a title="修改" href="javascript:;" onclick="admin_edit('商户编辑','${basePath}/admin/user/addpage','{ID}','800','500')" class="ml-5" style="text-decoration:none">
-                <i class="Hui-iconfont">&#xe6df;</i>
-            </a>
-            <a title="删除" href="javascript:;" onclick="admin_del(this,'{ID}')" data-vsersion="{dataVersion}" class="ml-5" style="text-decoration:none">
-                <i class="Hui-iconfont">&#xe6e2;</i>
-            </a>
-            <a title="分配权限" style="text-decoration:none" class="ml-5" onClick="admin_power('分配权限','${basePath}/admin/user/power','{ID}','800','500')" href="javascript:;" >
-                <i class="Hui-iconfont">&#xe63f;</i>
-            </a>
-        </c:if>
-    </script>
-
-<script type="text/javascript">
-
-    // 查看机构商户明细
-    function showDetail(id) {
-
-        $.post('showDetail',{id:id},function (data) {
-            console.log(data)
-
-            var index = layer.open({
-                id:1,
-                type: 1,
-                title:'商户明细',
-                skin:'layui-layer-rim',
-                area:['450px', 'auto'],
-                content:$("#detailDiv").html()
-                // btn:['保存','取消'],
-                // btn1: function (index,layero) {
-                //     layer.alert(index)
-                // },
-                // btn2:function (index,layero) {
-                //     layer.close(index);
-                // }
-
-            });
-
-            $("#cancelRegBTN").click(function() {
-                layer.close(index);
-            });
-
-        });
-
-    }
-
-    /*管理员-删除*/
-    function admin_del(obj, id) {
-        layer.confirm('确认要删除吗？', function (index) {
-            var version = $(obj).attr("data-vsersion");
-            version = parseInt(version);
-            //此处请求后台程序，下方是成功后的前台处理……
-            $.post('${basePath}/admin/user/update',{id:id,isDel:'F',dataVersion:version},function (data) {
-                if(data.code == "00"){
-                    $(obj).parents("tr").remove();
-                    layer.msg('已删除!',{icon:1,time:1000});
-                }else{
-                    layer.msg(data.msg, {icon: 5, time: 1000});
-                }
-            })
-        });
-    }
-
-    /*管理员-编辑*/
-    function admin_edit(title, url, id, w, h) {
-        layer_show(title, url+"?isOrgan=true&id="+id, w, h);
-    }
-    /*管理员-分配权限*/
-    function admin_power(title, url, id, w, h) {
-        layer_show(title, url+"?isOrgan=true&id="+id, w, h);
-    }
-    /*管理员-停用*/
-    function admin_stop(obj, id) {
-        layer.confirm('确认要冻结吗？', function (index) {
-            var version = $(obj).attr("data-vsersion");
-            version = parseInt(version);
-            //此处请求后台程序，下方是成功后的前台处理……
-            $.post('${basePath}/admin/user/update',{id:id,isActivity:'F',dataVersion:version},function (data) {
-                if(data.code == "00"){
-                    $(obj).parents("tr").find(".td-manage").prepend('<a onClick=admin_start(this,'+ id +') href="javascript:;" data-vsersion=' + version+' title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
-                    $(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已冻结</span>');
-                    $(obj).remove();
-                    $(obj).attr("data-vsersion",version + 1);
-                    layer.msg('已冻结!', {icon: 5, time: 1000});
-                }else{
-                    layer.msg(data.msg, {icon: 5, time: 1000});
-                }
-            })
-
-        });
-    }
-
-    /*管理员-启用*/
-    function admin_start(obj, id) {
-        layer.confirm('确认要激活吗？', function (index) {
-            //此处请求后台程序，下方是成功后的前台处理……
-            var version = $(obj).attr("data-vsersion");
-            version = parseInt(version);
-            $.post('${basePath}/admin/user/update',{id:id,isActivity:'T',dataVersion:version},function (data) {
-                if(data.code == "00"){
-                    $(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_stop(this,'+id+')" href="javascript:;" data-vsersion="'+version+'" title="停用" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
-                    $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已激活</span>');
-                    $(obj).remove();
-                    $(obj).attr("data-vsersion",version + 1);
-                    layer.msg('已激活!', {icon: 6, time: 1000});
-                }else{
-                    layer.msg(data.msg, {icon: 5, time: 1000});
-                }
-            })
-
-
-        });
-    }
-
+<script type="text/html" id="doMore">
+    <a href="javascript:;" style="color:blue;" >提现</a>
+    <c:if test="${curUser.roleType eq '0'}">
+        <a href="javascript:;" style="color:blue;" >差错</a>
+        <a href="javascript:;" style="color:blue;" >冻结</a>
+    </c:if>
 </script>
 
 </body>

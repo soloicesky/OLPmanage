@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onlinepay.manage.dao.organ.IOrganDao">
+<mapper namespace="com.onlinepay.manage.dao.organAccount.IOrganDao">
     <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.organ.entity.Organ">
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="total_amount" jdbcType="BIGINT" property="total_amount" />
@@ -17,52 +17,70 @@
         <result column="del_flag" jdbcType="TINYINT" property="del_flag" />
     </resultMap>
 
-    <sql id="OrganColumnList" >
-        id, total_amount, use_amount, draw_amount, freeze_amount, status, create_by,
-        login_id, create_date, update_by, update_date, remarks, del_flag
+    <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.organ.entity.OrganAccount">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="total_amount" jdbcType="BIGINT" property="total_amount" />
+        <result column="use_amount" jdbcType="BIGINT" property="use_amount" />
+        <result column="draw_amount" jdbcType="BIGINT" property="draw_amount" />
+        <result column="freeze_amount" jdbcType="BIGINT" property="freeze_amount" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="create_by" jdbcType="INTEGER" property="create_by" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
+        <result column="update_by" jdbcType="INTEGER" property="update_by" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+        <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+        <result column="del_flag" jdbcType="TINYINT" property="del_flag" />
+    </resultMap>
+
+    <sql id="accountColumnList" >
+        a.id, o.name organ_name, a.total_amount, a.use_amount, a.draw_amount, a.freeze_amount, a.status, a.create_by,
+        a.organ_id, a.create_date, a.update_by, a.update_date, a.remarks, a.del_flag
     </sql>
 
     <!--根据实体属性值动态添加查询条件-->
-    <sql id="SelectWhereList">
-        <if test="organ.id != null" >
-            AND ID = #{organ.id}
+    <sql id="accountWhereList">
+        <if test="organAccount.id != null" >
+            AND a.id = #{organAccount.id}
         </if>
-        <if test="organ.del_flag != null" >
-            AND del_flag = #{organ.del_flag}
+        <if test="organAccount.del_flag != null" >
+            AND a.del_flag = #{organAccount.del_flag}
         </if>
-        <if test="organ.login_id != null and organ.login_id != '0'.toString()">
-            AND login_id = #{organ.login_id}
+        <if test="organAccount.update_by != null and organAccount.update_by != '0'.toString()">
+            AND o.login_id = #{organAccount.login_id}
         </if>
     </sql>
 
-    <insert id="add" parameterType="com.onlinepay.manage.dao.organ.entity.Organ">
-      INSERT INTO organ (
-        office_id, status, create_by,
+    <insert id="add" parameterType="com.onlinepay.manage.dao.organAccount.entity.OrganAccount">
+      INSERT INTO organAccount (
+        organ_id, status, create_by,
         <!-- total_amount, use_amount, draw_amount, freeze_amount,-->
         create_date, update_by, update_date, remarks, del_flag, login_id) values (
-        #{organ.office_id},#{organ.status},#{organ.create_by},
-        <!-- #{organ.total_amount},#{organ.use_amount},#{organ.draw_amount},#{organ.freeze_amount}, -->
-          #{organ.create_date},#{organ.update_by},#{organ.update_date},#{organ.remarks},#{organ.del_flag},#{organ.login_id}
+        #{organAccount.organ_id},#{organAccount.status},#{organAccount.create_by},
+        <!-- #{organAccount.total_amount},#{organAccount.use_amount},#{organAccount.draw_amount},#{organAccount.freeze_amount}, -->
+          #{organAccount.create_date},#{organAccount.update_by},#{organAccount.update_date},#{organAccount.remarks},#{organAccount.del_flag},#{organAccount.login_id}
         )
     </insert>
 
     <!--按条件查询结果-->
-    <select id="selectPage" resultMap="BaseResultMap">
+    <select id="selectAccountPage" resultMap="BaseResultMap">
         SELECT
-        <include refid="OrganColumnList"/>
-        FROM organ
+        <include refid="accountColumnList"/>
+        FROM organAccount a
+        LEFT join organ o
+        on a.organ_id = o.id
         WHERE 1 = 1
-        <include refid="SelectWhereList"/>
+        <include refid="accountWhereList"/>
         LIMIT #{start},#{pageSize}
     </select>
 
     <!--条件查询总数-->
-    <select id="selectCount" resultType="java.lang.Integer">
+    <select id="selectAccountCount" resultType="java.lang.Integer">
         select
-        COUNT(o.id)
-        from organ AS o
+        COUNT(a.id)
+        from organAccount AS a
+        on a.organ_id = o.id
         where 1 = 1
-        <include refid="SelectWhereList"/>
+        <include refid="accountWhereList"/>
     </select>
 
 </mapper>

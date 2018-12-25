@@ -3,7 +3,7 @@ package com.onlinepay.manage.service.impl.organ;
 import com.onlinepay.manage.common.log.BaseLog;
 import com.onlinepay.manage.common.page.JqueryPageInfo;
 import com.onlinepay.manage.dao.organ.IOrganDao;
-import com.onlinepay.manage.dao.organ.entity.Organ;
+import com.onlinepay.manage.dao.organ.entity.OrganAccount;
 import com.onlinepay.manage.service.IOrganService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,21 +21,21 @@ public class OrganServiceImpl  extends BaseLog<OrganServiceImpl> implements IOrg
     private IOrganDao organDao;
 
     @Override
-    public void add(Organ organ) {
+    public void add(OrganAccount organAccount) {
         Date now = new Date();
-        organ.setCreate_date(now);
-        organ.setUpdate_date(now);
-        organ.setDel_flag(0);
-        organ.setStatus(1);
-        organDao.add(organ);
+        organAccount.setCreate_date(now);
+        organAccount.setUpdate_date(now);
+        organAccount.setDel_flag(0);
+        organAccount.setStatus(1);
+        organDao.add(organAccount);
     }
 
     @Override
-    public JqueryPageInfo<Organ> selectPage(JqueryPageInfo<Organ> pageInfo, Organ organ) {
+    public JqueryPageInfo<OrganAccount> selectAccountPage(JqueryPageInfo<OrganAccount> pageInfo, OrganAccount organAccount) {
 
-        List<Organ> results = organDao.selectPage(pageInfo.getStart(), pageInfo.getLength(), organ);
+        List<OrganAccount> results = organDao.selectAccountPage(pageInfo.getStart(), pageInfo.getLength(), organAccount);
         pageInfo.setData(results);
-        int count = organDao.selectCount(organ);
+        int count = organDao.selectAccountCount(organAccount);
         pageInfo.setRecordsFiltered((long)count);
         pageInfo.setRecordsTotal((long)count);
         return pageInfo;

@@ -1,6 +1,6 @@
 package com.onlinepay.manage.dao.organ;
 
-import com.onlinepay.manage.dao.organ.entity.Organ;
+import com.onlinepay.manage.dao.organ.entity.OrganAccount;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -9,9 +9,9 @@ public interface IOrganDao {
 
     /**
      * 新增
-     * @param organ
+     * @param organAccount
      */
-    void add(@Param("organ")Organ organ);
+    void add(@Param("organAccount") OrganAccount organAccount);
 
     /**
      *  分页查询机构
@@ -19,11 +19,11 @@ public interface IOrganDao {
      * @param pageSize
      * @return
      */
-    List<Organ> selectPage(@Param("start") int start, @Param("pageSize") int pageSize, @Param("organ")Organ organ);
+    List<OrganAccount> selectAccountPage(@Param("start") int start, @Param("pageSize") int pageSize, @Param("organAccount") OrganAccount organAccount);
 
     /**
      * 总数
      * @return
      */
-    int selectCount(@Param("organ")Organ organ);
+    int selectAccountCount(@Param("organAccount") OrganAccount organAccount);
 }

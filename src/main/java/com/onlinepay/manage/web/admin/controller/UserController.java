@@ -2,7 +2,7 @@ package com.onlinepay.manage.web.admin.controller;
 
 import com.onlinepay.manage.common.log.BaseLog;
 import com.onlinepay.manage.common.page.JqueryPageInfo;
-import com.onlinepay.manage.dao.organ.entity.Organ;
+import com.onlinepay.manage.dao.organ.entity.OrganAccount;
 import com.onlinepay.manage.service.IOrganService;
 import com.onlinepay.manage.service.ISysMenuService;
 import com.onlinepay.manage.service.ISysUserMenuService;
@@ -45,7 +45,7 @@ public class UserController extends BaseLog<UserController>{
     private IOrganService organService;
 
     @RequestMapping("list")
-    public ModelAndView listPage(HttpSession session){
+    public ModelAndView listPage(){
         return new ModelAndView("admin/user-list");
     }
 
@@ -173,11 +173,21 @@ public class UserController extends BaseLog<UserController>{
      */
     @RequestMapping("listOrganData")
     @ResponseBody
-    public JqueryPageInfo<AdminUser> listOrganData(JqueryPageInfo<AdminUser> pageInfo, AdminUser selectUser){
-        if(selectUser.getNickName() != null && selectUser.getNickName().equals(""))
+    public JqueryPageInfo<AdminUser> listOrganData(JqueryPageInfo<AdminUser> pageInfo, AdminUser selectUser, HttpSession session){
+
+        // 当前用户
+        AdminUser user = (AdminUser)session.getAttribute(LoginEnums.LOGIN_KEY.getKey());
+        if(null != null )
+            return null;
+
+        if(!"0".equals(user.getRoleType()))
+            selectUser.setLoginName(user.getLoginName());
+        else if(selectUser.getNickName() != null && selectUser.getNickName().equals(""))
             selectUser.setNickName(null);
+
         selectUser.setIsDel("T");
         selectUser.setRoleType("7");
+
         JqueryPageInfo<AdminUser> adminUserJqueryPageInfo = sysUserService.selectAllByPage(pageInfo, selectUser);
         return adminUserJqueryPageInfo;
     }
@@ -221,13 +231,14 @@ public class UserController extends BaseLog<UserController>{
                 if(null != auser) {
                     // 当前用户
                     AdminUser user = (AdminUser)session.getAttribute(LoginEnums.LOGIN_KEY.getKey());
-                    Organ organ = new Organ();
-                    organ.setOffice_id(adminUser.getOffice_id());
-                    organ.setLogin_id(auser.getId());
-                    organ.setCreate_by(user.getId());
-                    organ.setUpdate_by(user.getId());
-                    organ.setRemarks(adminUser.getRemarks());
-                    organService.add(organ);
+                    OrganAccount organAccount = new OrganAccount();
+//                    adminUser.getOffice_id()
+//                    organAccount.setOrgan_id();
+//                    organAccount.setLogin_id(auser.getId());
+                    organAccount.setCreate_by(user.getId());
+                    organAccount.setUpdate_by(user.getId());
+                    organAccount.setRemarks(adminUser.getRemarks());
+                    organService.add(organAccount);
                 }
 
             }

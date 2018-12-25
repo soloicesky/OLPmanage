@@ -183,7 +183,7 @@
 
                     var dateVal = new Date(dataArr[i].createTime);
                     dataArr[i].createTime = dateVal.Format("yyyy-MM-dd HH:mm:ss");
-                    dataArr[i].nickName = "<a href='javascript:void(0);' onclick='showDetail(\"" + dataArr[i].id +  "\")' >" + dataArr[i].nickName + "</a>";
+                    // dataArr[i].nickName = "<a href='javascript:void(0);' onclick='showDetail(\"" + dataArr[i].id +  "\")' >" + dataArr[i].nickName + "</a>";
                 }
                 return dataArr;
             }
@@ -191,9 +191,9 @@
     });
 </script>
     <script type="text/html" id="doMore">
-        <a style="text-decoration:none" onClick="layer_show('录入明细','detailPage','800','500')" data-vsersion="{dataVersion}" href="javascript:;" title="录入明细">
-            <i class="Hui-iconfont">&#xe61d;</i>
-        </a>
+        <%--<a style="text-decoration:none" onClick="layer_show('录入明细','detailPage','800','500')" data-vsersion="{dataVersion}" href="javascript:;" title="录入明细">--%>
+            <%--<i class="Hui-iconfont">&#xe61d;</i>--%>
+        <%--</a>--%>
         <c:if test="${curUser.roleType eq '0'}">
             <a style="text-decoration:none" onClick="{Fun}(this,'{ID}')" data-vsersion="{dataVersion}" href="javascript:;" title="{Title}">
                 <i class="Hui-iconfont">{IconClass}</i>
