@@ -94,7 +94,7 @@
             $(row).children('td').attr('style', 'text-align:center;')
         },
         "ajax": {
-            "url": "${basePath}/organAccount/listBalanceData",
+            "url": "${basePath}/organ/listAccountData",
             "type": "POST",
             "data": function (d) {
                 // d.beginTime = $("input[id='datemin']").val();

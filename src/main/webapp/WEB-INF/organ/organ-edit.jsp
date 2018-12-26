@@ -7,187 +7,170 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <jsp:include page="../core/_header.jsp"/>
-    <link rel="stylesheet" href="${basePath}/plugin/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
-    <title>编辑明细</title>
+    <title>编辑机构</title>
 </head>
 <body>
-<article class="page-container">
-    <form class="form form-horizontal" action = "${Url}" id="form-admin-add">
+<div class="page-container">
+    <form action="${Url}" method="post" class="form form-horizontal" id="form-article-add">
+        <c:if test="${organ != null}">
+            <input type="text" class="input-text" value="${organ.id}" name="id" id="id" style="display: none">
+        </c:if>
+        <%--<input type="text" class="input-text" value="${organ.version + 1}" name="version" id="version" style="display: none">--%>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>
-                <c:choose>
-                    <c:when test="${isOrgan}">
-                        新机构商户名称：
-                        <input type="hidden" value="7" name="roleType" />
-                    </c:when>
-                    <c:otherwise>管理员名称：</c:otherwise>
-                </c:choose>
-            </label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>机构名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="${IdUser.nickName}" id="nickName" name="nickName">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱(登录账号)：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" placeholder="@" name="loginName" id="loginName"
-                <c:if test="${IdUser != null}">
-                       value="${IdUser.loginName}"
+                <c:if test="${organ != null}">
+                    <input type="text" class="input-text" value="${organ.name}" name="name" id="name" readonly="readonly">
                 </c:if>
-                >
+                <c:if test="${organ == null}">
+                    <input type="text" class="input-text" value="${organ.name}" name="name" id="name" >
+                </c:if>
             </div>
         </div>
-        <c:if test="${IdUser == null}">
-            <div class="row cl">
-                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>初始密码：</label>
-                <div class="formControls col-xs-8 col-sm-9">
-                    <input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" id="loginPwd" name="loginPwd">
-                </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>机构号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="${organ.organ_no}" name="organ_no" id="organ_no" >
             </div>
-            <div class="row cl">
-                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
-                <div class="formControls col-xs-8 col-sm-9">
-                    <input type="password" class="input-text" autocomplete="off"  placeholder="确认新密码" id="loginPwd2" name="loginPwd2">
-                </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>结算卡号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="${organ.settle_carno}" name="settle_carno" id="settle_carno" >
             </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>开户名：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="${organ.settle_name}" name="settle_name" id="settle_name" >
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>开户银行：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="${organ.settle_bank}" name="settle_bank" id="settle_bank" >
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>开户行号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="${organ.bank_no}" name="bank_no" id="bank_no" >
+            </div>
+        </div>
+        
+        <%--<c:if test="${organ == null}">--%>
+        <%--<div class="row cl">--%>
+            <%--<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>加密秘钥：</label>--%>
+            <%--<div class="formControls col-xs-8 col-sm-9">--%>
+                <%--<input type="text" class="input-text" value="${organ.secretKey}" name="secretKey" id="secretKey">--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <%--<div class="row cl">--%>
+            <%--<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>安全邮箱：</label>--%>
+            <%--<div class="formControls col-xs-8 col-sm-9">--%>
+                <%--<input type="text" class="input-text" value="${organ.email}" name="email" id="email">--%>
+            <%--</div>--%>
+        <%--</div>--%>
+
+        <%--<div class="row cl">--%>
+            <%--<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>联系电话：</label>--%>
+            <%--<div class="formControls col-xs-8 col-sm-9">--%>
+                <%--<input type="text" class="input-text" value="${organ.phone}" name="phone" id="phone">--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <%--</c:if>--%>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>备注：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="${organ.remarks}" name="remarks" id="remarks">
+            </div>
+        </div>
+        <c:if test="${isReadOnly}" >
+
         </c:if>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text"
-                <c:if test="${IdUser != null}">
-                       value="${IdUser.phone}"
-                </c:if>
-                       placeholder="" id="phone" name="phone">
-            </div>
-        </div>
-        <c:if test="${IdUser != null}">
-            <input hidden value="${IdUser.id}" name="id">
-            <input hidden value="${IdUser.dataVersion}" name="dataVersion">
-        </c:if>
-        <div class="row cl">
-            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+            <div class="col-sm-12 text-c">
                 <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
             </div>
         </div>
     </form>
-</article>
+</div>
 
 <jsp:include page="../core/_footer.jsp"/>
-
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="${basePath}/plugin/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="${basePath}/plugin/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="${basePath}/plugin/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="${basePath}/plugin/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript" src="${basePath}/plugin/webuploader/0.1.5/webuploader.min.js"></script>
-
-<%--菜单列表--%>
-
+<script type="text/html" id="AddorganConfigHTML">
+    <label class="form-label col-xs-4 col-sm-2"></label>
+    <div class="formControls col-xs-8 col-sm-9" style="margin-top: 10px" JsonConfig>
+        <input type="text" class="input-text" value="" placeholder="JsonKey" name="key" style="width:25%">
+        =
+        <input type="text" class="input-text" value="" placeholder="JsonVal" name="val" style="width:25%">
+    </div>
+</script>
 <script type="text/javascript">
-    $(function(){
-        $('.skin-minimal input').iCheck({
-            checkboxClass: 'icheckbox-blue',
-            radioClass: 'iradio-blue',
-            increaseArea: '20%'
-        });
-
-        $("#form-admin-add").validate({
+    $(function () {
+//        $("#AddConfigBTN").click(function () {
+//            AddorganConfig();
+//        })
+        $("#form-article-add").validate({
             rules:{
-                nickName:{
-                    required:true,
-                    minlength:3,
-                    maxlength:16,
-                    remote:{
-                        url:'${basePath}/admin/user/check',
-                        type:'post',
-                        dataType:'json',
-                        data:{
-                            nickName:function () {
-                                return $("#nickName").val();
-                            },
-                            id:function () {
-                                if(${IdUser != null}){
-                                   return ${IdUser.id};
-                                }else{
-                                    return "-1";
-                                }
-                            }
-                        }
-                    }
+                organName:{
+                    required:true
                 },
-                loginPwd:{
-                    required:true,
+                description:{
+                    required:true
                 },
-                loginPwd2:{
+                secretKey:{
+                    required:true
+                },
+                email:{
                     required:true,
-                    equalTo: "#loginPwd",
+                    email:true
                 },
                 phone:{
                     required:true,
-                    isPhone:true,
-                },
-                loginName:{
-                    required:true,
-                    email:true,
-                    remote:{
-                        url:'${basePath}/admin/user/check',
-                        type:'post',
-                        dataType:'json',
-                        data:{
-                            loginName:function () {
-                                return $("#loginName").val();
-                            },
-                            id:function () {
-                                if(${IdUser != null}){
-                                    return ${IdUser.id};
-                                }else{
-                                    return "-1";
-                                }
-                            }
-                        }
-                    }
+                    isPhone:true
                 }
             },
             onkeyup:false,
             focusCleanup:true,
             success:"valid",
             submitHandler:function(form){
-            	 var url = '${basePath}/admin/user/add';
-                 if('${IdUser}' != ''){
-                     url = "${basePath}/admin/user/update";
-                 }
+                var url = $(form).attr("action");
                 $(form).ajaxSubmit({
                     type: 'post',
                     url: url ,
                     success: function(data){
-                    	if(url.indexOf("add")){
+                    	if(url=="add"){
                             if(data.code == "00"){
                                layer.msg('添加成功!',{icon:1,time:1000},function () {
                                     var index = parent.layer.getFrameIndex(window.name);
                                     window.parent.location.reload(); 
                                     parent.layer.close(index);
-                               });
+                                    });
                             }else{
                                 layer.msg('添加失败!',{icon:2,time:1000});
                             }
-                        }
-                    	if(url.indexOf("update")){
-                            if(data.code == "00"){
+                        	}
+                    	if(url=="update"){
+                            alert(data.code);
+                    		if(data.code == "00"){
                                layer.msg('修改成功!',{icon:1,time:1000},function () {
                                     var index = parent.layer.getFrameIndex(window.name);
                                     window.parent.location.reload(); 
                                     parent.layer.close(index);
-                               });
+                                    });
                             }else{
                                 layer.msg('修改失败!',{icon:2,time:1000});
                             }
-                        }
-                        	
+                        	}
                     },
                     error: function(XmlHttpRequest, textStatus, errorThrown){
                         layer.msg('error!',{icon:1,time:1000});
@@ -198,34 +181,7 @@
         })
 
     })
-    
-           /*  onkeyup:false,
-            focusCleanup:true,
-            success:"valid",
-            submitHandler:function(form){
-                var url = 'add';
-                if('${IdUser}' != ''){
-                    url = "update";
-                }
 
-                $(form).ajaxSubmit({
-                    type: 'post',
-                    url: url,
-                    success: function(data){
-                        layer.msg('添加成功!',{icon:1,time:1000});
-                    },
-                    error: function(XmlHttpRequest, textStatus, errorThrown){
-                        layer.msg('error!',{icon:1,time:1000});
-                    }
-                });
-                var index = parent.layer.getFrameIndex(window.name);
-                parent.$("#btn-refresh").click();
-                parent.layer.close(index);
-            }
-        });
-    }); */
 </script>
-<!--/请在上方写此页面业务相关的脚本-->
-
 </body>
 </html>

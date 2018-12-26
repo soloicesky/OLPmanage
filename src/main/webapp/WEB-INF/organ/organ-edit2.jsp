@@ -12,7 +12,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <jsp:include page="../core/_header.jsp"/>
     <link rel="stylesheet" href="${basePath}/plugin/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
-    <title>添加管理员</title>
+    <title>编辑明细</title>
 </head>
 <body>
 <article class="page-container">
@@ -21,7 +21,7 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>
                 <c:choose>
                     <c:when test="${isOrgan}">
-                        登陆名称：
+                        新机构商户名称：
                         <input type="hidden" value="7" name="roleType" />
                     </c:when>
                     <c:otherwise>管理员名称：</c:otherwise>
@@ -31,20 +31,6 @@
                 <input type="text" class="input-text" value="${IdUser.nickName}" id="nickName" name="nickName">
             </div>
         </div>
-        <c:if test="${isOrgan}">
-            <div class="row cl">
-                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>机构名称：</label>
-                <div class="formControls col-xs-8 col-sm-9">
-                    <input type="text" class="input-text"  id="name" name="name">
-                </div>
-            </div>
-            <div class="row cl">
-                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>机构号：</label>
-                <div class="formControls col-xs-8 col-sm-9">
-                    <input type="text" class="input-text"  id="organ_no" name="organ_no">
-                </div>
-            </div>
-        </c:if>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱(登录账号)：</label>
             <div class="formControls col-xs-8 col-sm-9">

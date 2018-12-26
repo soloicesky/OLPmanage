@@ -2,8 +2,6 @@ package com.onlinepay.manage.web.admin.controller;
 
 import com.onlinepay.manage.common.log.BaseLog;
 import com.onlinepay.manage.common.page.JqueryPageInfo;
-import com.onlinepay.manage.dao.organ.entity.OrganAccount;
-import com.onlinepay.manage.service.IOrganService;
 import com.onlinepay.manage.service.ISysMenuService;
 import com.onlinepay.manage.service.ISysUserMenuService;
 import com.onlinepay.manage.service.ISysUserService;
@@ -41,8 +39,6 @@ public class UserController extends BaseLog<UserController>{
     private ISysUserService sysUserService;
     @Autowired
     private ISysUserMenuService sysUserMenuService;
-    @Autowired
-    private IOrganService organService;
 
     @RequestMapping("list")
     public ModelAndView listPage(){
@@ -215,33 +211,17 @@ public class UserController extends BaseLog<UserController>{
             insUser.setRoleType(adminUser.getRoleType());
 
         insUser.setCreateTime(new Date());
+        // 当前用户为创建者
+        AdminUser user = (AdminUser)session.getAttribute(LoginEnums.LOGIN_KEY.getKey());
+        insUser.setCreateUser(user.getId().toString());
+        insUser.setOrgan_no(adminUser.getOrgan_no());
+        insUser.setName(adminUser.getName());
         int row = sysUserService.insertAdminUser(insUser);
         if(row != 1){
             log().info("插入用户信息失败。");
             response.setCode("02");
             response.setMsg("添加用户信息失败，请稍后重试。");
         }else{
-            // 如果新增机构用户,则新增一个机构账户与之对应
-            if(!StringUtil.isBlank(adminUser.getRoleType()) && "7".equals(adminUser.getRoleType())) {
-
-                AdminUser auser = new AdminUser();
-                auser.setNickName(adminUser.getNickName());
-                auser = sysUserService.selectUserByUser(auser);
-
-                if(null != auser) {
-                    // 当前用户
-                    AdminUser user = (AdminUser)session.getAttribute(LoginEnums.LOGIN_KEY.getKey());
-                    OrganAccount organAccount = new OrganAccount();
-//                    adminUser.getOffice_id()
-//                    organAccount.setOrgan_id();
-//                    organAccount.setLogin_id(auser.getId());
-                    organAccount.setCreate_by(user.getId());
-                    organAccount.setUpdate_by(user.getId());
-                    organAccount.setRemarks(adminUser.getRemarks());
-                    organService.add(organAccount);
-                }
-
-            }
             response.setCode("00");
             response.setMsg("OK");
         }

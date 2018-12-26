@@ -36,6 +36,10 @@ public class Organ {
      */
     private String public_key;
     /**
+     * 创建者
+     */
+    private Integer create_by;
+    /**
      * 身份标识key
      */
     private String access_key;
@@ -55,6 +59,14 @@ public class Organ {
      * 开户行号
      */
     private String bank_no;
+    /**
+     * 删除标记符
+     */
+    private short del_flag;
+    /**
+     * 备注
+     */
+    private String remarks;
 
     public Integer getId() {
         return id;
@@ -150,5 +162,29 @@ public class Organ {
 
     public void setBank_no(String bank_no) {
         this.bank_no = bank_no;
+    }
+
+    public short getDel_flag() {
+        return del_flag;
+    }
+
+    public void setDel_flag(short del_flag) {
+        this.del_flag = del_flag;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Integer getCreate_by() {
+        return create_by;
+    }
+
+    public void setCreate_by(Integer create_by) {
+        this.create_by = create_by;
     }
 }

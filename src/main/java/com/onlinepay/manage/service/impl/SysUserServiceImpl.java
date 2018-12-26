@@ -1,20 +1,22 @@
 package com.onlinepay.manage.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.onlinepay.manage.common.log.BaseLog;
+import com.onlinepay.manage.common.page.JqueryPageInfo;
+import com.onlinepay.manage.dao.organ.entity.Organ;
+import com.onlinepay.manage.dao.user.IAdminUserDao;
+import com.onlinepay.manage.dao.user.entity.SysUser;
+import com.onlinepay.manage.service.IOrganService;
+import com.onlinepay.manage.service.ISysUserService;
+import com.onlinepay.manage.service.entity.AdminUser;
+import com.onlinepay.manage.web.util.StringUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.onlinepay.manage.common.log.BaseLog;
-import com.onlinepay.manage.common.page.JqueryPageInfo;
-import com.onlinepay.manage.dao.user.IAdminUserDao;
-import com.onlinepay.manage.dao.user.entity.SysUser;
-import com.onlinepay.manage.service.ISysUserService;
-import com.onlinepay.manage.service.entity.AdminUser;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * TODO:
@@ -25,6 +27,8 @@ public class SysUserServiceImpl extends BaseLog<SysUserServiceImpl> implements I
 
     @Autowired
     private IAdminUserDao adminUserDao;
+    @Autowired
+    private IOrganService organService;
 
     @Override
     public AdminUser selectLoginInfo(AdminUser user) {
@@ -77,6 +81,26 @@ public class SysUserServiceImpl extends BaseLog<SysUserServiceImpl> implements I
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(user,sysUser);
         int row = adminUserDao.insertAdminUser(sysUser);
+
+        // 如果新增机构用户,则新增一个机构账户与之对应
+        if(row == 1 && !StringUtil.isBlank(user.getRoleType()) && "7".equals(user.getRoleType())) {
+
+            SysUser queryUser = new SysUser();
+            queryUser.setNickName(user.getNickName());
+            queryUser = adminUserDao.selectSysUser(queryUser);
+
+            if(null != queryUser) {
+                Organ organ = new Organ();
+                organ.setName(user.getName());
+                organ.setLogin_id(queryUser.getId());
+                organ.setCreate_by(Integer.parseInt(user.getCreateUser()));
+                organ.setOrgan_no(user.getOrgan_no());
+                organService.add(organ);
+            }
+
+        }
+
+
         return row;
     }
 

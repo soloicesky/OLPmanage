@@ -26,14 +26,6 @@
 <div class="page-container">
     <c:if test="${curUser.roleType eq '0'}">
         <div class="text-c">
-            <%--日期范围：--%>
-            <%--<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin"--%>
-                   <%--class="input-text Wdate" style="width:120px;">--%>
-            <%-----%>
-            <%--<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax"--%>
-                   <%--class="input-text Wdate" style="width:120px;">--%>
-            <%--<input type="text" class="input-text" style="width:250px" placeholder="输入商户名称" id="nickName" name="nickName">--%>
-            <%--<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>--%>
             <a href="javascript:;" onclick="layer_show('添加机构商户','${basePath}/admin/user/addpage?isOrgan=true','800','500')" class="btn btn-primary radius">
                 <i class="Hui-iconfont">&#xe600;</i> 添加商户
             </a>
@@ -42,7 +34,7 @@
     <table class="table table-border table-bordered table-bg">
         <thead>
         <tr class="text-c">
-            <th>机构商户名称</th>
+            <th>机构用户名称</th>
             <th>登录账号</th>
             <th>手机</th>
             <th>创建时间</th>
@@ -54,59 +46,6 @@
         </tbody>
     </table>
 </div>
-
-<%--<div class="row" id="detailPage"  style="width: 420px; margin-left:7px; margin-top:10px;">--%>
-    <%--<div class="col-sm-12">--%>
-        <%--<div class="input-group"><span class="input-group-addon"> 邮   箱   :</span>--%>
-            <%--<input id="email" type="text" class="form-control"placeholder="请输入你的邮箱">--%>
-        <%--</div>--%>
-    <%--</div>--%>
-    <%--<div class="col-sm-12" style="margin-top: 10px">--%>
-        <%--<div class="input-group"><span class="input-group-addon"> 用 户 名  :</span>--%>
-            <%--<input id="username" type="text"class="form-control" placeholder="请输入你的用户名(大小写英文)">--%>
-        <%--</div>--%>
-    <%--</div>--%>
-    <%--<div class="col-sm-12" style="margin-top: 10px">--%>
-        <%--<div class="input-group"><span class="input-group-addon"> 密 码   :</span>--%>
-            <%--<input id="pwd" type="password" class="form-control" placeholder="请输入你的密码"></div>--%>
-    <%--</div>--%>
-    <%--<div class="col-sm-12" style="margin-top: 10px">--%>
-        <%--<div class="input-group"><span class="input-group-addon">确认密码:</span>--%>
-            <%--<input id="secondpwd" type="sedpassword" class="form-control" placeholder="请再输入一次密码"></div>--%>
-    <%--</div>--%>
-
-    <%--<div class="col-sm-12 pull-right" style="margin-top: 10px">--%>
-            <%--<span class="ant-checkbox ant-checkbox-checked"><input type="checkbox" id="mustClick" class="ant-checkbox-input">--%>
-                <%--<span class="ant-checkbox-inner"></span></span>--%>
-        <%--<span><span>同意<a href="${ctx}/resources/agreement.html" target="_blank">《九磊科技公司信息服务条款、隐私政策》</a></span></span>--%>
-        <%--<button type="button" onclick="checkRegValue()" id="regBTN" class="btn  btn-success">注册</button>--%>
-        <%--<button type="button" id="cancelRegBTN" class="btn btn-info">取消</button>--%>
-    <%--</div>--%>
-
-<%--</div>--%>
-
-<script type="text/html" id="detailPage">
-    <form class="form form-horizontal" id="form-admin-add">
-        <div class="row cl" style="margin-right: 0px !important;">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>初始密码：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" autocomplete="off" value="" placeholder="初始密码" id="loginPwd3" name="loginPwd3">
-            </div>
-        </div>
-        <div class="row cl" style="margin-right: 0px !important;">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新密码：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" autocomplete="off" value="" placeholder="新密码" id="loginPwd" name="loginPwd">
-            </div>
-        </div>
-        <div class="row cl" style="margin-right: 0px !important;">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" autocomplete="off"  placeholder="确认新密码" id="loginPwd2" name="loginPwd2">
-            </div>
-        </div>
-    </form>
-</script>
 
 <jsp:include page="../core/_footer.jsp"/>
 
@@ -183,7 +122,10 @@
 
                     var dateVal = new Date(dataArr[i].createTime);
                     dataArr[i].createTime = dateVal.Format("yyyy-MM-dd HH:mm:ss");
-                    // dataArr[i].nickName = "<a href='javascript:void(0);' onclick='showDetail(\"" + dataArr[i].id +  "\")' >" + dataArr[i].nickName + "</a>";
+                    dataArr[i].nickName = "<a href='javascript:void(0);' onclick='layer_show(\"机构明细\",\"editPage?login_id="
+                        + dataArr[i].id + "&isReadOnly=true\",\"800\",\"500\")'>"
+                        + "hoho" + "</a>";
+                    console.log(dataArr[i].nickName);
                 }
                 return dataArr;
             }
@@ -191,9 +133,9 @@
     });
 </script>
     <script type="text/html" id="doMore">
-        <%--<a style="text-decoration:none" onClick="layer_show('录入明细','detailPage','800','500')" data-vsersion="{dataVersion}" href="javascript:;" title="录入明细">--%>
-            <%--<i class="Hui-iconfont">&#xe61d;</i>--%>
-        <%--</a>--%>
+        <a style="text-decoration:none" onClick="layer_show('录入明细','editPage?login_id={ID}','800','500')" data-vsersion="{dataVersion}" href="javascript:;" title="录入明细">
+            <i class="Hui-iconfont">&#xe61d;</i>
+        </a>
         <c:if test="${curUser.roleType eq '0'}">
             <a style="text-decoration:none" onClick="{Fun}(this,'{ID}')" data-vsersion="{dataVersion}" href="javascript:;" title="{Title}">
                 <i class="Hui-iconfont">{IconClass}</i>

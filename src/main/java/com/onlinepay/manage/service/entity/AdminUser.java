@@ -54,8 +54,8 @@ public class AdminUser {
     private String phone;
     private Integer dataVersion;
 
-    private Integer office_id;
-    private String remarks;
+    private String organ_no;
+    private String name;
 
     public Integer getDataVersion() {
         return dataVersion;
@@ -161,19 +161,19 @@ public class AdminUser {
         this.updateTime = updateTime;
     }
 
-    public Integer getOffice_id() {
-        return office_id;
+    public String getName() {
+        return name;
     }
 
-    public void setOffice_id(Integer office_id) {
-        this.office_id = office_id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getRemarks() {
-        return remarks;
+    public String getOrgan_no() {
+        return organ_no;
     }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
+    public void setOrgan_no(String organ_no) {
+        this.organ_no = organ_no;
     }
 }

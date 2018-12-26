@@ -2,9 +2,11 @@ package com.onlinepay.manage.web.organ.controller;
 
 import com.onlinepay.manage.common.log.BaseLog;
 import com.onlinepay.manage.common.page.JqueryPageInfo;
+import com.onlinepay.manage.dao.organ.entity.Organ;
 import com.onlinepay.manage.dao.organ.entity.OrganAccount;
 import com.onlinepay.manage.service.IOrganService;
 import com.onlinepay.manage.service.entity.AdminUser;
+import com.onlinepay.manage.web.organ.entity.OrganResponse;
 import com.onlinepay.manage.web.system.enums.LoginEnums;
 import com.onlinepay.manage.web.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ public class OrganController extends BaseLog<OrganController> {
      * 机构商户列表
      * @return
      */
-    @RequestMapping("list")
+    @RequestMapping("listPage")
     public ModelAndView listPage(){
 
         log().info("===商户列表查询===");
@@ -40,22 +42,52 @@ public class OrganController extends BaseLog<OrganController> {
 
     /**
      * 机构商户明细页面
-     * @param id
+     * @param login_id
+     * @param isReadOnly
      * @return
      */
-    @RequestMapping("detailPage")
-    public ModelAndView addPage(String id){
+    @RequestMapping("editPage")
+    public ModelAndView editPage(String login_id, boolean isReadOnly){
 
-        ModelAndView mod = new ModelAndView("organ/organ-detail");
-        mod.addObject("Url","addDetail");
+        Organ organ = organService.getOrgan(Integer.parseInt(login_id));
+        ModelAndView mod = new ModelAndView("organ/organ-edit");
+        mod.addObject("organ", organ);
+        mod.addObject("Url","editOrgan");
+        mod.addObject("isReadOnly", isReadOnly);
         return mod;
     }
 
-    @RequestMapping("balance")
-    public ModelAndView balancePage(){
+    @RequestMapping("accountPage")
+    public ModelAndView accountPage(){
 
         log().info("===商户列表查询===");
-        return new ModelAndView("organ/organ-balance");
+        return new ModelAndView("organ/organ-account");
+    }
+
+    @RequestMapping("editOrgan")
+    @ResponseBody
+    public OrganResponse editOrgan(Organ organ, HttpSession session){
+
+        return null;
+    }
+
+    /**
+     *  显示机构商户明细
+     * @param id
+     * @return
+     */
+    @RequestMapping("showDetail")
+    @ResponseBody
+    public AdminUser showDetail(String id){
+
+        AdminUser user = new AdminUser();
+
+        if(!StringUtil.isBlank(id)) {
+            user.setId(Integer.parseInt(id));
+            user.setNickName("iscast");
+        }
+
+        return user;
     }
 
     /**
@@ -63,9 +95,9 @@ public class OrganController extends BaseLog<OrganController> {
      * @param pageInfo
      * @return
      */
-    @RequestMapping("listBalanceData")
+    @RequestMapping("listAccountData")
     @ResponseBody
-    public JqueryPageInfo<OrganAccount> listBalanceData(JqueryPageInfo<OrganAccount> pageInfo, HttpSession session){
+    public JqueryPageInfo<OrganAccount> listAccountData(JqueryPageInfo<OrganAccount> pageInfo, HttpSession session){
 
         // 当前用户
         AdminUser user = (AdminUser)session.getAttribute(LoginEnums.LOGIN_KEY.getKey());
@@ -88,27 +120,5 @@ public class OrganController extends BaseLog<OrganController> {
         }
 
     }
-
-    /**
-     *  显示机构商户明细
-     * @param id
-     * @return
-     */
-    @RequestMapping("showDetail")
-    @ResponseBody
-    public AdminUser showDetail(String id){
-
-        AdminUser user = new AdminUser();
-
-        if(!StringUtil.isBlank(id)) {
-            user.setId(Integer.parseInt(id));
-            user.setNickName("iscast");
-        }
-
-        return user;
-    }
-
-
-
 
 }

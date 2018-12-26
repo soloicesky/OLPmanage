@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.onlinepay.manage.dao.organAccount.IOrganDao">
-    <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.organ.entity.Organ">
+<mapper namespace="com.onlinepay.manage.dao.organ.IOrganDao">
+    <resultMap id="organMap" type="com.onlinepay.manage.dao.organ.entity.Organ">
         <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="total_amount" jdbcType="BIGINT" property="total_amount" />
-        <result column="use_amount" jdbcType="BIGINT" property="use_amount" />
-        <result column="draw_amount" jdbcType="BIGINT" property="draw_amount" />
-        <result column="freeze_amount" jdbcType="BIGINT" property="freeze_amount" />
-        <result column="status" jdbcType="TINYINT" property="status" />
-        <result column="create_by" jdbcType="INTEGER" property="create_by" />
         <result column="login_id" jdbcType="INTEGER" property="login_id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
-        <result column="update_by" jdbcType="INTEGER" property="update_by" />
         <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+        <result column="organ_no" jdbcType="VARCHAR" property="organ_no" />
+        <result column="create_by" jdbcType="INTEGER" property="create_by" />
+        <result column="public_key" jdbcType="VARCHAR" property="public_key" />
+        <result column="access_key" jdbcType="VARCHAR" property="access_key" />
+        <result column="settle_carno" jdbcType="VARCHAR" property="settle_carno" />
+        <result column="settle_name" jdbcType="VARCHAR" property="settle_name" />
+        <result column="settle_bank" jdbcType="VARCHAR" property="settle_bank" />
+        <result column="bank_no" jdbcType="VARCHAR" property="bank_no" />
         <result column="remarks" jdbcType="VARCHAR" property="remarks" />
         <result column="del_flag" jdbcType="TINYINT" property="del_flag" />
     </resultMap>
 
-    <resultMap id="BaseResultMap" type="com.onlinepay.manage.dao.organ.entity.OrganAccount">
+    <resultMap id="organAmountMap" type="com.onlinepay.manage.dao.organ.entity.OrganAccount">
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="total_amount" jdbcType="BIGINT" property="total_amount" />
         <result column="use_amount" jdbcType="BIGINT" property="use_amount" />
@@ -37,6 +39,11 @@
         a.organ_id, a.create_date, a.update_by, a.update_date, a.remarks, a.del_flag
     </sql>
 
+    <sql id="organColumnList" >
+        id, name, login_id, create_date, update_date, remarks, create_by,
+        organ_no, public_key, access_key, settle_carno, settle_name, settle_bank, bank_no, del_flag
+    </sql>
+
     <!--根据实体属性值动态添加查询条件-->
     <sql id="accountWhereList">
         <if test="organAccount.id != null" >
@@ -50,22 +57,55 @@
         </if>
     </sql>
 
-    <insert id="add" parameterType="com.onlinepay.manage.dao.organAccount.entity.OrganAccount">
-      INSERT INTO organAccount (
+    <!--根据实体属性值动态添加查询条件-->
+    <sql id="organWhereList">
+        <if test="organ.login_id != null" >
+            AND login_id = #{organ.login_id}
+        </if>
+    </sql>
+
+    <select id="getOrgan" resultMap="organMap">
+      select
+      <include refid="organColumnList"/>
+      from organ
+      where 1 = 1
+      <include refid="organWhereList"/>
+    </select>
+
+    <!--<select id="getOrganAcount" resultMap="organAmountMap">-->
+        <!--select-->
+        <!--<include refid="accountColumnList"/>-->
+        <!--from organ-->
+        <!--where login_id = #{login_id}-->
+    <!--</select>-->
+
+    <insert id="addOrgan" parameterType="com.onlinepay.manage.dao.organ.entity.Organ">
+        INSERT INTO organ (
+        login_id, name, organ_no, create_by,create_date, update_date,
+        public_key, access_key, settle_carno, settle_name, settle_bank,
+        bank_no, remarks, del_flag) values (
+        #{organ.login_id}, #{organ.name}, #{organ.organ_no}, #{organ.create_by},#{organ.create_date},
+        #{organ.update_date}, #{organ.public_key}, #{organ.access_key},#{organ.settle_carno},
+        #{organ.settle_name},#{organ.settle_bank},#{organ.bank_no},#{organ.remarks},#{organ.del_flag}
+        )
+    </insert>
+
+    <insert id="addAccount" parameterType="com.onlinepay.manage.dao.organ.entity.OrganAccount">
+      INSERT INTO organ_account (
         organ_id, status, create_by,
         <!-- total_amount, use_amount, draw_amount, freeze_amount,-->
-        create_date, update_by, update_date, remarks, del_flag, login_id) values (
+        create_date, update_by, update_date, remarks, del_flag) values (
         #{organAccount.organ_id},#{organAccount.status},#{organAccount.create_by},
         <!-- #{organAccount.total_amount},#{organAccount.use_amount},#{organAccount.draw_amount},#{organAccount.freeze_amount}, -->
-          #{organAccount.create_date},#{organAccount.update_by},#{organAccount.update_date},#{organAccount.remarks},#{organAccount.del_flag},#{organAccount.login_id}
+          #{organAccount.create_date},#{organAccount.update_by},#{organAccount.update_date},#{organAccount.remarks},#{organAccount.del_flag}
         )
     </insert>
 
     <!--按条件查询结果-->
-    <select id="selectAccountPage" resultMap="BaseResultMap">
+    <select id="selectAccountPage" resultMap="organAmountMap">
         SELECT
         <include refid="accountColumnList"/>
-        FROM organAccount a
+        FROM organ_account a
         LEFT join organ o
         on a.organ_id = o.id
         WHERE 1 = 1
@@ -77,7 +117,7 @@
     <select id="selectAccountCount" resultType="java.lang.Integer">
         select
         COUNT(a.id)
-        from organAccount AS a
+        from organ_account AS a
         on a.organ_id = o.id
         where 1 = 1
         <include refid="accountWhereList"/>

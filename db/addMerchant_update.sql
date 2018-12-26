@@ -1,15 +1,15 @@
 #新增机构商户列表菜单
 INSERT INTO paygateway.T_SYS_MENU (id, name, url, level, icon_class, parent_id, sort)
-VALUES (40, '机构列表', 'organAccount/List', 'T', null, 22, 2);
+VALUES (40, '机构列表', 'organ/listPage', 'T', null, 22, 2);
 #新增机构账户余额
 INSERT INTO paygateway.T_SYS_MENU (id, name, url, level, icon_class, parent_id, sort)
-VALUES (41, '机构账户余额', 'organAccount/balance', 'T', null, 22, 3);
+VALUES (41, '机构账户余额', 'organ/accountPage', 'T', null, 22, 3);
 #机构账户明细
 INSERT INTO paygateway.T_SYS_MENU (id, name, url, level, icon_class, parent_id, sort)
-VALUES (42, '机构流水明细', 'organAccount/detail', 'T', null, 22, 4);
+VALUES (42, '机构流水明细', 'organ/detailPage', 'T', null, 22, 4);
 #机构账户提现
 INSERT INTO paygateway.T_SYS_MENU (id, name, url, level, icon_class, parent_id, sort)
-VALUES (43, '机构提现列表', 'organAccount/withdraw', 'T', null, 22, 5);
+VALUES (43, '机构提现列表', 'organ/withdrawPage', 'T', null, 22, 5);
 
 #商户模板用户
 INSERT INTO T_SYS_USER (id, nick_name, login_name, login_pwd, role_type, is_del, is_activity, create_time, data_version, admin_no, phone)
@@ -31,6 +31,7 @@ CREATE TABLE organ
     version bigint,
     name varchar(50) COMMENT '名称',
     login_id int(11) NOT NULL COMMENT '登陆账户id',
+    create_by int(11) NOT NULL COMMENT '创建者',
     organ_no varchar(20) NOT NULL COMMENT '机构号',
     remarks varchar(200) COMMENT '备注',
     public_key varchar(512) COMMENT '公钥',
@@ -38,7 +39,8 @@ CREATE TABLE organ
     settle_carno varchar(100) COMMENT '结算卡号',
     settle_name varchar(100) COMMENT '结算人',
     settle_bank varchar(100) COMMENT '结算银行',
-    bank_no varchar(100) COMMENT '开户行号'
+    bank_no varchar(100) COMMENT '开户行号',
+    del_flag tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记（0：正常；1：删除）'
 );
 CREATE UNIQUE INDEX organ_id_uindex ON organ (id);
 CREATE UNIQUE INDEX organ_organ_no_uindex ON organ (organ_no);
